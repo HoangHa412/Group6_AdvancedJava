@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:remove="all" style="font-weight: bold;">Tạo tài khoản đăng nhập</title>
+</head>
+<body>
+<p>Xin chào!</p>
+
+<p>Anh/chị đã yêu cầu tạo tài khoản đăng nhập mới </p>
+
+<p style="margin-top: 1rem;">Anh/chị vui lòng truy cập vào liên kết dưới đây để thực hiện tạo tài khoản của anh chị theo hướng dẫn:</p>
+<a th:href="@{${verifyTokenUrl}}">Link tạo tài khoản</a>
+
+<p>Trân trọng.</p>
+<hr style="margin-top: 1rem;"/>
+<p>Hệ thống quản lý đối tượng được hỗ trợ sử dụng dịch vụ của Trường Đại Học Công Nghiệp Hà Nội</p>
+</body>
+</html>
