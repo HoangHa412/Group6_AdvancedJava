@@ -1,5 +1,6 @@
 package com.group4.HaUISocialMedia_server.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -20,8 +22,8 @@ public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String key;
+    private String tokenKey;
     private String value;
-    private Date startDate;
-    private Date endDate;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

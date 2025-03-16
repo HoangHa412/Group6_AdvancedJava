@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Group9_AdvancedJava.iml" filepath="$PROJECT_DIR$/.idea/Group9_AdvancedJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Group6_AdvancedJava.iml" filepath="$PROJECT_DIR$/.idea/Group6_AdvancedJava.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HaUISocialMedia_server/serverjava.iml" filepath="$PROJECT_DIR$/HaUISocialMedia_server/serverjava.iml" />
     </modules>
   </component>
 </project>

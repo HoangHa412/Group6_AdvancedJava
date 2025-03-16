@@ -1,14 +1,8 @@
 package com.group4.HaUISocialMedia_server.rest;
 
 import com.group4.HaUISocialMedia_server.config.JwtTokenProvider;
-import com.group4.HaUISocialMedia_server.dto.ForgotPasswordDto;
-import com.group4.HaUISocialMedia_server.dto.JwtAuthResponse;
-import com.group4.HaUISocialMedia_server.dto.LoginDto;
-import com.group4.HaUISocialMedia_server.dto.RegisterDto;
-import com.group4.HaUISocialMedia_server.dto.ResetPasswordDto;
-import com.group4.HaUISocialMedia_server.dto.UserDto;
+import com.group4.HaUISocialMedia_server.dto.*;
 import com.group4.HaUISocialMedia_server.entity.Token;
-import com.group4.HaUISocialMedia_server.entity.User;
 import com.group4.HaUISocialMedia_server.repository.UserRepository;
 import com.group4.HaUISocialMedia_server.service.AuthService;
 import com.group4.HaUISocialMedia_server.service.MailService;
@@ -16,40 +10,47 @@ import com.group4.HaUISocialMedia_server.service.TokenService;
 import com.group4.HaUISocialMedia_server.service.UserService;
 import com.group4.HaUISocialMedia_server.swing.AdminLogin;
 import lombok.AllArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
-import org.springframework.web.bind.annotation.*;
-
-@AllArgsConstructor
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    private AuthService authService;
 
-    @Autowired
-    private UserService userService;
+    private final AuthService authService;
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private MailService mailService;
+    private final UserService userService;
 
-    @Autowired
-    private TokenService tokenService;
+
+    private final UserRepository userRepository;
+
+
+    private final MailService mailService;
+
+
+    private final TokenService tokenService;
 
     @Value("${registers.token.urlveryfyToken}")
-    private String verifyToken;
+    private String verifyTokenRegister;
+
+    @Value("${forgetpassword.token.urlVerifyToken}")
+    private String verifyTokenReset;
+
+    public AuthController(AuthService authService, UserService userService, UserRepository userRepository, TokenService tokenService, MailService mailService){
+        this.authService = authService;
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.mailService = mailService;
+        this.tokenService = tokenService;
+    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<JwtAuthResponse> authenticate(@RequestBody LoginDto loginDto) {
@@ -79,12 +80,12 @@ public class AuthController {
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         String token = jwtTokenProvider.generateTokenRegister();
         Token tokenEntity = new Token();
-        tokenEntity.setKey(token);
+        tokenEntity.setTokenKey(token);
         tokenEntity.setValue(email);
         tokenService.save(tokenEntity);
-        String verifyToken = this.verifyToken + token;
+        String verifyTokenUrl = this.verifyTokenRegister + token;
         Map<String, String> data = new HashMap<>();
-        data.put("verifyToken", verifyToken);
+        data.put("verifyToken", verifyTokenUrl);
         String title = "Hệ thống tạo tài khoản mới";
         String footer = "Hệ thống quản lý đối tượng được hỗ trợ sử dụng dịch vụ của Trường Đại học Công nghiệp Hà Nội";
         data.put("txtFooter", footer);
@@ -93,6 +94,7 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/registerPassword")
     public ResponseEntity<?> register(@RequestBody ResetPasswordDto data){
         String token = data.getToken();
 
@@ -123,13 +125,13 @@ public class AuthController {
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         String token = jwtTokenProvider.generateTokenRegister();
         Token tokenEntity = new Token();
-        tokenEntity.setKey(token);  
+        tokenEntity.setTokenKey(token);  
         tokenEntity.setValue(email);
         tokenService.save(tokenEntity);
 
-        String verifyToken = this.verifyToken + token;
+        String verifyTokenUrl = this.verifyTokenReset + token;
         Map<String, String> map = new HashMap<>();
-        map.put("verifyToken", verifyToken);
+        map.put("verifyToken", verifyTokenUrl);
         String title = "Hệ thống đặt lại mật khẩu";
         String footer = "Hệ thống quản lý đối tượng được hỗ trợ sử dụng dịch vụ của Trường Đại học Công nghiệp Hà Nội";
         map.put("txtFooter", footer);
