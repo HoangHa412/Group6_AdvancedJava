@@ -5,23 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cc43a81-9388-45dc-9d3c-1821698a2c21" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Group6_AdvancedJava.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Group9_AdvancedJava.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HaUISocialMedia_server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/HaUISocialMedia_server/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/HaUiSocialMediaServerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/HaUiSocialMediaServerApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/entity/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/entity/Token.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/repository/TokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/repository/TokenRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/rest/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/rest/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/service/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/java/com/group4/HaUISocialMedia_server/service/TokenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/HaUISocialMedia_server/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clientreactjs/src/components/Auth/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/clientreactjs/src/components/Auth/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clientreactjs/src/components/Auth/Register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/clientreactjs/src/components/Auth/Register.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,6 +59,7 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "D:\\project\\Haui\\Group6_AdvancedJava\\clientreactjs\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -102,11 +89,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1742140055795</updated>
-      <workItem from="1742140057613" duration="2028000" />
+      <workItem from="1742140057613" duration="2520000" />
     </task>
+    <task id="LOCAL-00001" summary="update token">
+      <option name="closed" value="true" />
+      <created>1742142130233</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1742142130233</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="update token" />
+    <option name="LAST_COMMIT_MESSAGE" value="update token" />
   </component>
 </project>

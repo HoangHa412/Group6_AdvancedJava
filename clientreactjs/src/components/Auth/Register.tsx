@@ -18,19 +18,19 @@ import { useStore } from "@/stores";
 import { useState } from "react";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 
-// const formSchema = z.object({
-//   email: z.string().email("Email là bắt buộc"),
-// });
+const formSchema = z.object({
+  email: z.string().email("Email là bắt buộc"),
+});
 
 const Register = () => {
   // const navigate = useNavigate();
-  // const [isLoading, setIsLoading] = useState(false);
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     email: "",
-  //   },
-  // });
+  const [isLoading, setIsLoading] = useState(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
 
   // const { authStore } = useStore();
   // const { signUpUser } = authStore;

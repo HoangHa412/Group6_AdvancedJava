@@ -17,7 +17,7 @@ import { observer } from "mobx-react";
 import { useStore } from "@/stores";
 import { toast } from "react-toastify";
 import LoginIcon from '@mui/icons-material/Login';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+
 
 const formSchema = z.object({
   username: z.string().min(1, {
