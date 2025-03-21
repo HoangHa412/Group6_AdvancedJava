@@ -38,21 +38,22 @@ public class SetupData implements ApplicationRunner {
     private PasswordEncoder passwordEncoder;
 
     private void initializeBaseUser() {
-        //initialize user admin
+        // initialize user admin
         User admin = userRepository.findByUsername("admin");
         if (admin == null) {
             admin = new User();
             admin.setRole(Role.ADMIN.name());
             admin.setUsername("admin");
             admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setEmail("admin");
 
             userRepository.save(admin);
         }
-//        List<User> users = userRepository.findAllByRole("USER");
-//        for(User user:users){
-//            user.setDisable(false);
-//            userRepository.save(user);
-//        }
+        // List<User> users = userRepository.findAllByRole("USER");
+        // for(User user:users){
+        // user.setDisable(false);
+        // userRepository.save(user);
+        // }
     }
 
     @Autowired
@@ -86,6 +87,7 @@ public class SetupData implements ApplicationRunner {
             roomTypeService.createRoomType(dto);
         }
     }
+
     @Autowired
     private MessageTypeService messageTypeService;
 
@@ -149,32 +151,35 @@ public class SetupData implements ApplicationRunner {
     private NotificationTypeService notificationTypeService;
 
     private void initializeNotificationType() {
-//        NotificationType tym1 = notificationTypeService.getNotificationTypeEntityByName("Liked");
-//        if (tym1 == null) {
-//            NotificationTypeDto tym = new NotificationTypeDto();
-//            tym.setCode("001");
-//            tym.setName("Liked");
-//            tym.setDescription("a person liked your post");
-//            notificationTypeService.save(tym);
-//        }
-//
-//        NotificationType accept1 = notificationTypeService.getNotificationTypeEntityByName("Accepted");
-//        if (accept1 == null) {
-//            NotificationTypeDto accept = new NotificationTypeDto();
-//            accept.setCode("002");
-//            accept.setName("Accepted");
-//            accept.setDescription("a person accepted your request friend");
-//            notificationTypeService.save(accept);
-//        }
-//
-//        NotificationType request1 = notificationTypeService.getNotificationTypeEntityByName("Requested");
-//        if (request1 == null) {
-//            NotificationTypeDto request = new NotificationTypeDto();
-//            request.setCode("003");
-//            request.setName("Requested");
-//            request.setDescription("a person requested add friend with you");
-//            notificationTypeService.save(request);
-//        }
+        // NotificationType tym1 =
+        // notificationTypeService.getNotificationTypeEntityByName("Liked");
+        // if (tym1 == null) {
+        // NotificationTypeDto tym = new NotificationTypeDto();
+        // tym.setCode("001");
+        // tym.setName("Liked");
+        // tym.setDescription("a person liked your post");
+        // notificationTypeService.save(tym);
+        // }
+        //
+        // NotificationType accept1 =
+        // notificationTypeService.getNotificationTypeEntityByName("Accepted");
+        // if (accept1 == null) {
+        // NotificationTypeDto accept = new NotificationTypeDto();
+        // accept.setCode("002");
+        // accept.setName("Accepted");
+        // accept.setDescription("a person accepted your request friend");
+        // notificationTypeService.save(accept);
+        // }
+        //
+        // NotificationType request1 =
+        // notificationTypeService.getNotificationTypeEntityByName("Requested");
+        // if (request1 == null) {
+        // NotificationTypeDto request = new NotificationTypeDto();
+        // request.setCode("003");
+        // request.setName("Requested");
+        // request.setDescription("a person requested add friend with you");
+        // notificationTypeService.save(request);
+        // }
 
         NotificationType post = notificationTypeService.getNotificationTypeEntityByName("Post");
         if (post == null) {
@@ -212,6 +217,5 @@ public class SetupData implements ApplicationRunner {
             notificationTypeService.save(chatDto);
         }
     }
-
 
 }

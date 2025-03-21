@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${app.jwt-secret}")
-    private String jwtSecret;
+    // @Value("${app.jwt-secret}")
+    private final static String jwtSecret = "daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb";
 
     @Value("${app.jwt-expiration-milliseconds}")
     private long jwtExpirationDate;
@@ -55,9 +55,12 @@ public class JwtTokenProvider {
     }
 
     public String generateTokenRegister() {
+        Date currentDate = new Date();
+
+        Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
         return Jwts.builder()
-                .issuedAt(Date.from(Instant.now()))
-                .expiration(Date.from(Instant.now().plusMillis(jwtExpirationDate)))
+                .issuedAt(new Date())
+                .expiration(expireDate)
                 .signWith(key())
                 .compact();
     }

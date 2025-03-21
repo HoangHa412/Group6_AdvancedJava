@@ -1,0 +1,4 @@
+# Bỏ qua thư mục cấu hình của IDE
+.vscode/
+.idea/
+**/.idea/

@@ -20,7 +20,7 @@ import LoginIcon from '@mui/icons-material/Login';
 
 
 const formSchema = z.object({
-  username: z.string().min(1, {
+  email: z.string().min(1, {
     message: "Tên đăng nhập là bắt buộc",
   }),
   password: z.string().min(1, {
@@ -34,7 +34,7 @@ function Login() {
   const form = useForm<LoginForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
