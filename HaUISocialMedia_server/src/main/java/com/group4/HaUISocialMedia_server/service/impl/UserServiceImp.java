@@ -164,7 +164,7 @@ public class UserServiceImp implements UserService {
 
         String currentUserName = auth.getName();
         if (currentUserName == null) return null;
-        User currentUser = userRepository.findByUsername(currentUserName);
+        User currentUser = userRepository.findByEmail(currentUserName).orElse(null);
 
         return currentUser;
     }
@@ -445,6 +445,16 @@ public class UserServiceImp implements UserService {
         User user = userRepository.findByEmail(email.trim()).orElse(null);
         user.setPassword(passwordEncoder.encode(password));
 
+        userRepository.save(user);
+    }
+
+    @Override
+    public void register(String email, String password) {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("USER");
+        user.setDisable(false);
         userRepository.save(user);
     }
 }

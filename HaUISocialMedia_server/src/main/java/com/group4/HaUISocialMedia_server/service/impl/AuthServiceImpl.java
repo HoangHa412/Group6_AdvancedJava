@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
     public String login(LoginDto loginDto) {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsername(),
+                loginDto.getEmail(),
                 loginDto.getPassword()
         ));
 
@@ -46,63 +46,63 @@ public class AuthServiceImpl implements AuthService {
         return token;
     }
 
-    @Override
-    public UserDto register(UserDto dto) {
-        User existedUser = userRepository.findByUsername(dto.getUsername());
-        if (existedUser != null) return null;
+//     @Override
+//     public UserDto register(UserDto dto) {
+//         User existedUser = userRepository.findByUsername(dto.getUsername());
+//         if (existedUser != null) return null;
 
-        User newUser = new User();
+//         User newUser = new User();
 
-        newUser.setUsername(dto.getUsername());
-        newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+//         newUser.setUsername(dto.getUsername());
+//         newUser.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        if (dto.getCode() != null)
-            newUser.setCode(dto.getCode());
+//         if (dto.getCode() != null)
+//             newUser.setCode(dto.getCode());
 
-        if (dto.getFirstName() != null)
-            newUser.setFirstName(dto.getFirstName());
+//         if (dto.getFirstName() != null)
+//             newUser.setFirstName(dto.getFirstName());
 
-        if (dto.getLastName() != null)
-            newUser.setLastName(dto.getLastName());
+//         if (dto.getLastName() != null)
+//             newUser.setLastName(dto.getLastName());
 
-        newUser.setGender(dto.isGender());
+//         newUser.setGender(dto.isGender());
 
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date birthDate = null;
-//        try {
-//            birthDate = dateFormat.parse(dto.getBirthDate()));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
-//        Date birthDate = null;
-//        try {
-//            birthDate = dateFormat.parse(String.valueOf(dto.getBirthDate()));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-        newUser.setBirthDate(dto.getBirthDate());
-//        newUser.setBirthDate(dto.getBirthDate());
+// //        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+// //        Date birthDate = null;
+// //        try {
+// //            birthDate = dateFormat.parse(dto.getBirthDate()));
+// //        } catch (ParseException e) {
+// //            e.printStackTrace();
+// //        }
+// //        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
+// //        Date birthDate = null;
+// //        try {
+// //            birthDate = dateFormat.parse(String.valueOf(dto.getBirthDate()));
+// //        } catch (ParseException e) {
+// //            e.printStackTrace();
+// //        }
+//         newUser.setBirthDate(dto.getBirthDate());
+// //        newUser.setBirthDate(dto.getBirthDate());
 
-        if (dto.getAddress() != null)
-            newUser.setAddress(dto.getAddress());
+//         if (dto.getAddress() != null)
+//             newUser.setAddress(dto.getAddress());
 
-        if (dto.getPhoneNumber() != null)
-            newUser.setPhoneNumber(dto.getPhoneNumber());
+//         if (dto.getPhoneNumber() != null)
+//             newUser.setPhoneNumber(dto.getPhoneNumber());
 
-        if (dto.getEmail() != null)
-            newUser.setEmail(dto.getEmail());
-        newUser.setRole(Role.USER.name());
+//         if (dto.getEmail() != null)
+//             newUser.setEmail(dto.getEmail());
+//         newUser.setRole(Role.USER.name());
 
-        if (dto.getAvatar() != null)
-            newUser.setAvatar(dto.getAvatar());
+//         if (dto.getAvatar() != null)
+//             newUser.setAvatar(dto.getAvatar());
 
-        newUser.setPhoneNumber(dto.getPhoneNumber());
+//         newUser.setPhoneNumber(dto.getPhoneNumber());
 
-        User savedUser = userRepository.save(newUser);
+//         User savedUser = userRepository.save(newUser);
 
-        if (savedUser == null) return null;
+//         if (savedUser == null) return null;
 
-        return new UserDto(savedUser);
-    }
+//         return new UserDto(savedUser);
+//     }
 }

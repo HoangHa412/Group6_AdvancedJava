@@ -73,8 +73,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
                         "or u.firstName like %:keyword% or u.lastName like %:keyword%")
         Long countValidStudents(@Param("keyword") String keyword);
 
-        @Query("select u.disable from User u where u.username = :userName")
-        boolean getStatusByUserName(@Param("userName") String userName);
+        @Query("select u.disable from User u where u.email = :email")
+        boolean getStatusByEmail(@Param("email") String email);
 
         Optional<User> findByEmail(String email);
 }

@@ -39,6 +39,8 @@ public interface UserService {
 
     void forgetPassword(String email, String password);
 
+    void register(String email, String password);
+
 
 
 

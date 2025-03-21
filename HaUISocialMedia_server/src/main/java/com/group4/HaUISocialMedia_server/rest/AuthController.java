@@ -3,6 +3,7 @@ package com.group4.HaUISocialMedia_server.rest;
 import com.group4.HaUISocialMedia_server.config.JwtTokenProvider;
 import com.group4.HaUISocialMedia_server.dto.*;
 import com.group4.HaUISocialMedia_server.entity.Token;
+import com.group4.HaUISocialMedia_server.entity.User;
 import com.group4.HaUISocialMedia_server.repository.UserRepository;
 import com.group4.HaUISocialMedia_server.service.AuthService;
 import com.group4.HaUISocialMedia_server.service.MailService;
@@ -26,15 +27,11 @@ public class AuthController {
 
     private final AuthService authService;
 
-
     private final UserService userService;
-
 
     private final UserRepository userRepository;
 
-
     private final MailService mailService;
-
 
     private final TokenService tokenService;
 
@@ -44,7 +41,8 @@ public class AuthController {
     @Value("${forgetpassword.token.urlVerifyToken}")
     private String verifyTokenReset;
 
-    public AuthController(AuthService authService, UserService userService, UserRepository userRepository, TokenService tokenService, MailService mailService){
+    public AuthController(AuthService authService, UserService userService, UserRepository userRepository,
+            TokenService tokenService, MailService mailService) {
         this.authService = authService;
         this.userService = userService;
         this.userRepository = userRepository;
@@ -54,21 +52,34 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<JwtAuthResponse> authenticate(@RequestBody LoginDto loginDto) {
-        String token = authService.login(loginDto);
-
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-        jwtAuthResponse.setAccessToken(token);
-        jwtAuthResponse.setLoggedInUser(new UserDto(userService.getCurrentLoginUserEntity()));
-        if (userRepository.getStatusByUserName(loginDto.getUsername()))
+        // Check if user exists and is not disabled first
+        if (userRepository.getStatusByEmail(loginDto.getEmail())) {
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-
-        if (jwtAuthResponse.getLoggedInUser().getRole().equals("ADMIN")) {
-            AdminLogin adminView = new AdminLogin(userService);
-            adminView.setVisible(true);
-            adminView.setLocationRelativeTo(null);
         }
 
-        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
+        try {
+            String token = authService.login(loginDto);
+
+            JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+            jwtAuthResponse.setAccessToken(token);
+
+            User currentUser = userService.getCurrentLoginUserEntity();
+            if (currentUser == null) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+
+            jwtAuthResponse.setLoggedInUser(new UserDto(currentUser));
+
+            if (jwtAuthResponse.getLoggedInUser().getRole().equals("ADMIN")) {
+                AdminLogin adminView = new AdminLogin(userService);
+                adminView.setVisible(true);
+                adminView.setLocationRelativeTo(null);
+            }
+
+            return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PostMapping("/register")
@@ -85,7 +96,7 @@ public class AuthController {
         tokenService.save(tokenEntity);
         String verifyTokenUrl = this.verifyTokenRegister + token;
         Map<String, String> data = new HashMap<>();
-        data.put("verifyToken", verifyTokenUrl);
+        data.put("verifyTokenUrl", verifyTokenUrl);
         String title = "Hệ thống tạo tài khoản mới";
         String footer = "Hệ thống quản lý đối tượng được hỗ trợ sử dụng dịch vụ của Trường Đại học Công nghiệp Hà Nội";
         data.put("txtFooter", footer);
@@ -95,7 +106,7 @@ public class AuthController {
     }
 
     @PostMapping("/registerPassword")
-    public ResponseEntity<?> register(@RequestBody ResetPasswordDto data){
+    public ResponseEntity<?> register(@RequestBody ResetPasswordDto data) {
         String token = data.getToken();
 
         String email = tokenService.findEmailByKey(token);
@@ -103,10 +114,11 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Token không hợp lệ");
         }
 
-        if (!isValidPassword(data.getPassword())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt và không chứa kí tự đặc biệt");
+        if (isValidPassword(data.getPassword().trim())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt và không chứa kí tự đặc biệt");
         }
-        userService.forgetPassword(email, data.getPassword());
+        userService.register(email, data.getPassword());
         tokenService.deleteTokenByEmail(email);
 
         return ResponseEntity.status(HttpStatus.OK).body("Đã Cài đặt mật khẩu thành công");
@@ -115,8 +127,9 @@ public class AuthController {
     @PostMapping("/forgotPassword")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDto data) {
         String email = data.getEmail().trim();
-        if (email.isEmpty()) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-         
+        if (email.isEmpty())
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
         UserDto oUser = userService.getUserByEmail(email);
         if (oUser == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email không tồn tại");
@@ -125,13 +138,13 @@ public class AuthController {
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         String token = jwtTokenProvider.generateTokenRegister();
         Token tokenEntity = new Token();
-        tokenEntity.setTokenKey(token);  
+        tokenEntity.setTokenKey(token);
         tokenEntity.setValue(email);
         tokenService.save(tokenEntity);
 
         String verifyTokenUrl = this.verifyTokenReset + token;
         Map<String, String> map = new HashMap<>();
-        map.put("verifyToken", verifyTokenUrl);
+        map.put("verifyTokenUrl", verifyTokenUrl);
         String title = "Hệ thống đặt lại mật khẩu";
         String footer = "Hệ thống quản lý đối tượng được hỗ trợ sử dụng dịch vụ của Trường Đại học Công nghiệp Hà Nội";
         map.put("txtFooter", footer);
@@ -153,8 +166,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email không tồn tại");
         }
 
-        if (!isValidPassword(data.getPassword().trim())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt và không chứa kí tự đặc biệt");
+        if (isValidPassword(data.getPassword().trim())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt và không chứa kí tự đặc biệt");
         }
         userService.forgetPassword(email, data.getPassword());
         tokenService.deleteTokenByEmail(email);
