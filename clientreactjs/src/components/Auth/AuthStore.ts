@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { toast } from "react-toastify";
 import LocalStorage from "@/services/LocalStorageService";
-import { registerUser, authenticateUser } from "../../services/AuthService";
+import { authenticateUser, registerUser } from "../../services/AuthService";
 import axios from "axios";
 import { getCurrentLoginUser } from "@/services/UserService";
 import SocketService from "@/services/SocketService";
@@ -15,27 +15,26 @@ class AuthStore {
     return LocalStorage.getLoggedInUser();
   }
 
-  // signUpUser = async (user: any) => {
-  //   try {
-  //     const { data } = await registerUser(user);
-  //     toast.success("Chúc mừng bạn đã đăng kí thành công, vui lòng đăng nhập lại!", {
-  //       position: "top-left",
-  //     });
-  //     return data;
-  //   } catch (error: any) {
-  //     if (error?.response?.status === 409)
-  //       toast.info("Tên người dùng đã tồn tại, vui lòng chọn tên khác!", {
-  //         position: "top-left",
-  //       });
-  //     else {
-  //       console.error(error);
-  //       toast.error("Đăng kí tài khoản có lỗi :(", {
-  //         position: "top-left",
-  //       });
-  //     }
-  //     throw new Error(error);
-  //   }
-  // };
+  signUpUser = async (user: any) => {
+    try {
+      const { data } = await registerUser(user);
+      toast.success("Đăng kí thành công, vui lòng kiểm tra email!", {
+        position: "top-left",
+      });
+      return data;
+    } catch (error: any) {
+      if (error?.response?.status === 409)
+        toast.info("Email đã tồn tại!", {
+          position: "top-left",
+        });
+      else {
+        toast.error("Đăng kí tài khoản có lỗi :(", {
+          position: "top-left",
+        });
+      }
+      throw new Error(error);
+    }
+  };
 
   authenticateUser = async (user: any) => {
     try {
@@ -82,24 +81,15 @@ class AuthStore {
 
   setSession(token: any) {
     if (token) {
-      LocalStorage.setItem("jwt_token", token);
-
-      //add field to compatible with Thanh Thuan code
       localStorage.setItem("token", token);
-
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     } else {
-      LocalStorage.removeItem("jwt_token");
-
-      //add field to compatible with Thanh Thuan code
       localStorage.removeItem("token");
-
       delete axios.defaults.headers.common["Authorization"];
     }
   }
 
   loadCurrentUserByApi = async () => {
-    // debugger
     try {
       const { data } = await getCurrentLoginUser();
 
@@ -114,13 +104,9 @@ class AuthStore {
 
   setUser = (user: any) => {
     LocalStorage.setItem("auth_user", user);
-    //add field to compatible with Thanh Thuan code
-    localStorage.setItem("user", user);
   };
   removeUser = () => {
     LocalStorage.removeItem("auth_user");
-    //add field to compatible with Thanh Thuan code
-    localStorage.removeItem("user");
   };
 
   getAllClaimsFromJwt = (token: any) => {
