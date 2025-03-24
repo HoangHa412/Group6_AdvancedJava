@@ -33,10 +33,11 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/register-confirm" element={<RegisterConfirm />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
+        <Route path="/register">
+          <Route index element={<Register />} />
+          <Route path=":token" element={<RegisterConfirm />} />
+        </Route>
         {/* private routes */}
         <Route element={<Protect allowedRoles={['USER']} />}>
           <Route path="/" element={<Layout />}>

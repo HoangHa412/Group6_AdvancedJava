@@ -4,9 +4,12 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { useState } from "react";
+import { Loader } from "lucide-react";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import { useStore } from "@/stores";
 const formSchema = z.object({
     newPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
     confirmPassword: z.string().min(6, { message: "Vui lòng nhập lại mật khẩu" }),
@@ -18,15 +21,29 @@ const formSchema = z.object({
 export type ResetPasswordForm = z.infer<typeof formSchema>;
 
 function RegisterConfirm() {
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { token } = useParams();
+    const { authStore } = useStore();
     const form = useForm<ResetPasswordForm>({
         resolver: zodResolver(formSchema),
         defaultValues: { newPassword: "", confirmPassword: "" },
     });
 
+    async function handleRegisterPassword(values: any) {
+        try {
+            setIsLoading(true);
+            await authStore.registerPassword({ token: token || '', password: values.newPassword, confirmPassword: values.confirmPassword });
+        } catch (error) {
+            toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     const onSubmit = async (values: ResetPasswordForm) => {
         try {
-            console.log("Mật khẩu mới:", values.newPassword);
+            await handleRegisterPassword(values);
             toast.success("Mật khẩu đã được cập nhật!");
             navigate("/login");
         } catch (error) {
@@ -77,7 +94,16 @@ function RegisterConfirm() {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" className="w-full mt-5 transition-all duration-300 bg-blue-700 hover:bg-blue-900">Tạo mật khẩu mới</Button>
+                        <p className="mb-5 mr-5 text-end text-slate-500">
+                            Đã có tài khoản?{" "}
+                            <Link to="/login" className="text-blue-600 hover:text-blue-800">
+                                Đăng nhập
+                            </Link>
+                        </p>
+                        <Button disabled={isLoading} type="submit" className="w-full transition-all duration-300 bg-blue-700 hover:bg-blue-900">
+                            <HowToRegIcon className="mr-2" />
+                            {isLoading ? <Loader /> : "Tạo mật khẩu"}
+                        </Button>
                     </form>
                 </Form>
             </div>

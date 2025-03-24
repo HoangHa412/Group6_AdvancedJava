@@ -9,12 +9,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/shared/Loader";
 import { useState } from "react";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { useStore } from "@/stores";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   email: z.string().email("Email là bắt buộc"),
@@ -22,7 +23,6 @@ const formSchema = z.object({
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,9 +36,8 @@ const Register = () => {
     try {
       setIsLoading(true);
       await signUpUser(values);
-      navigate("/login");
     } catch (error) {
-      console.error(error);
+      toast.error("Có lỗi xảy ra, vui lòng thử lại!");
     } finally {
       setIsLoading(false);
     }

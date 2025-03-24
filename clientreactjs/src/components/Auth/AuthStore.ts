@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { toast } from "react-toastify";
 import LocalStorage from "@/services/LocalStorageService";
-import { authenticateUser, registerUser } from "../../services/AuthService";
+import { authenticateUser, registerPassword, registerUser } from "../../services/AuthService";
 import axios from "axios";
 import { getCurrentLoginUser } from "@/services/UserService";
 import SocketService from "@/services/SocketService";
@@ -35,6 +35,21 @@ class AuthStore {
       throw new Error(error);
     }
   };
+  registerPassword = async ({ token, password, confirmPassword }: { token: string, password: string, confirmPassword: string }) => {
+    try {
+      const { data } = await registerPassword({ token, password, confirmPassword });
+      toast.success("Đăng kí thành công, vui lòng kiểm tra email!", {
+        position: "top-left",
+      });
+      return data;
+    } catch (error: any) {
+      console.log(error)
+      toast.info(error.message, {
+        position: "top-left",
+      });
+      throw new Error(error);
+    }
+  }
 
   authenticateUser = async (user: any) => {
     try {
