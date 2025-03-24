@@ -1,5 +1,6 @@
 package com.group4.HaUISocialMedia_server.service.impl;
 
+import com.group4.HaUISocialMedia_server.dto.RegisterPassword;
 import com.group4.HaUISocialMedia_server.dto.RelationshipDto;
 import com.group4.HaUISocialMedia_server.dto.SearchObject;
 import com.group4.HaUISocialMedia_server.dto.UserDto;
@@ -33,21 +34,22 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
     @Autowired
     private RelationshipRepository relationshipRepository;
 
     @Override
     public List<UserDto> getAllUsers() {
         User currentUser = this.getCurrentLoginUserEntity();
-        if (currentUser == null) return null;
+        if (currentUser == null)
+            return null;
 
         List<UserDto> res = new ArrayList<>();
         List<User> allUsers = userRepository.findAll();
         for (User user : allUsers) {
             UserDto person = new UserDto(user);
 
-            //set mutual friends of current user and viewing user
+            // set mutual friends of current user and viewing user
             person.setMutualFriends(relationshipService.getMutualFriends(person.getId(), currentUser.getId()));
 
             res.add(person);
@@ -58,24 +60,29 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDto getById(UUID userId) {
-        if (userId == null) return null;
+        if (userId == null)
+            return null;
         User currentUser = userService.getCurrentLoginUserEntity();
-        if (currentUser == null) return null;
+        if (currentUser == null)
+            return null;
 
         User user = userRepository.findById(userId).orElse(null);
-        if (user == null) return null;
+        if (user == null)
+            return null;
 
         UserDto res = new UserDto(user);
 
         if (!currentUser.getId().equals(userId)) {
-            List<Relationship> relationships = relationshipRepository.getRelationshipBetweenCurrentUserAndViewingUser(currentUser.getId(), userId);
+            List<Relationship> relationships = relationshipRepository
+                    .getRelationshipBetweenCurrentUserAndViewingUser(currentUser.getId(), userId);
 
             Relationship relationship = null;
             if (relationships != null && relationships.size() > 0) {
                 relationship = relationships.get(0);
 
                 if (relationships.size() >= 2)
-                    System.out.println("There's duplicate record which is must be have 1 in database, error but handled");
+                    System.out
+                            .println("There's duplicate record which is must be have 1 in database, error but handled");
             }
 
             if (relationship != null) {
@@ -84,7 +91,7 @@ public class UserServiceImp implements UserService {
             }
         }
 
-        //set mutual friends of current user and viewing user
+        // set mutual friends of current user and viewing user
         res.setMutualFriends(relationshipService.getMutualFriends(res.getId(), currentUser.getId()));
 
         return res;
@@ -92,14 +99,17 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDto getByUserName(String name) {
-        if (name == null) return null;
+        if (name == null)
+            return null;
         UserDto res = new UserDto(userRepository.findByUsername(name));
-        if (res == null) return null;
+        if (res == null)
+            return null;
 
         User currentUser = this.getCurrentLoginUserEntity();
-        if (currentUser == null) return null;
+        if (currentUser == null)
+            return null;
 
-        //set mutual friends of current user and viewing user
+        // set mutual friends of current user and viewing user
         res.setMutualFriends(relationshipService.getMutualFriends(currentUser.getId(), res.getId()));
 
         return res;
@@ -110,7 +120,6 @@ public class UserServiceImp implements UserService {
     public void deleteById(UUID id) {
         userRepository.deleteById(id);
     }
-
 
     @Override
     @Transactional
@@ -138,16 +147,19 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<UserDto> searchByUsername(SearchObject searchObject) {
-        if (searchObject == null) return null;
+        if (searchObject == null)
+            return null;
 
         User currentUser = userService.getCurrentLoginUserEntity();
-        if (currentUser == null) return null;
+        if (currentUser == null)
+            return null;
 
         List<UserDto> res = new ArrayList<>();
-        List<User> validUsers = userRepository.getByUserName(searchObject.getKeyWord(), searchObject.getPageSize(), searchObject.getPageIndex() - 1);
+        List<User> validUsers = userRepository.getByUserName(searchObject.getKeyWord(), searchObject.getPageSize(),
+                searchObject.getPageIndex() - 1);
         for (User user : validUsers) {
             UserDto person = new UserDto(user);
-            //set mutual friends of current user and viewing user
+            // set mutual friends of current user and viewing user
             person.setMutualFriends(relationshipService.getMutualFriends(person.getId(), currentUser.getId()));
         }
         return res;
@@ -163,7 +175,8 @@ public class UserServiceImp implements UserService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         String currentUserName = auth.getName();
-        if (currentUserName == null) return null;
+        if (currentUserName == null)
+            return null;
         User currentUser = userRepository.findByEmail(currentUserName).orElse(null);
 
         return currentUser;
@@ -174,11 +187,11 @@ public class UserServiceImp implements UserService {
         return userRepository.findById(userId).orElse(null);
     }
 
-
     @Override
     public UserDto getCurrentLoginUser() {
         User currentUser = this.getCurrentLoginUserEntity();
-        if (currentUser == null) return null;
+        if (currentUser == null)
+            return null;
 
         return new UserDto(currentUser);
     }
@@ -186,8 +199,10 @@ public class UserServiceImp implements UserService {
     @Override
     public UserDto isDisable(UUID userId) {
         User currentUser = this.getCurrentLoginUserEntity();
-        if (currentUser == null) return null;
-        if (!currentUser.getRole().equals("ADMIN")) return null;
+        if (currentUser == null)
+            return null;
+        if (!currentUser.getRole().equals("ADMIN"))
+            return null;
         User entity = userRepository.findById(userId).orElse(null);
         entity.setDisable(true);
         userRepository.save(entity);
@@ -197,8 +212,10 @@ public class UserServiceImp implements UserService {
     @Override
     public UserDto updateStatus(UUID userId) {
         User currentUser = this.getCurrentLoginUserEntity();
-        if (currentUser == null) return null;
-        if (!currentUser.getRole().equals("ADMIN")) return null;
+        if (currentUser == null)
+            return null;
+        if (!currentUser.getRole().equals("ADMIN"))
+            return null;
         User entity = userRepository.findById(userId).orElse(null);
         entity.setDisable(false);
         userRepository.save(entity);
@@ -207,12 +224,14 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<UserDto> pagingByKeyword(SearchObject searchObject) {
-        if (searchObject == null) return null;
+        if (searchObject == null)
+            return null;
         String keyword = insertPercent(searchObject.getKeyWord());
 
         User currentUser = userService.getCurrentLoginUserEntity();
 
-        if (currentUser == null || searchObject == null) return null;
+        if (currentUser == null || searchObject == null)
+            return null;
 
         List<User> validUsers = userRepository.pagingUsers(keyword,
                 PageRequest.of(searchObject.getPageIndex() - 1, searchObject.getPageSize()));
@@ -221,18 +240,19 @@ public class UserServiceImp implements UserService {
         for (User user : validUsers) {
             UserDto person = new UserDto(user);
 
-            //set relationship between current user and viewing user
+            // set relationship between current user and viewing user
             if (!currentUser.getId().equals(person.getId())) {
-                List<Relationship> relationships = relationshipRepository.getRelationshipBetweenCurrentUserAndViewingUser(currentUser.getId(), person.getId());
+                List<Relationship> relationships = relationshipRepository
+                        .getRelationshipBetweenCurrentUserAndViewingUser(currentUser.getId(), person.getId());
 
                 Relationship relationship = null;
                 if (relationships != null && relationships.size() > 0) {
                     relationship = relationships.get(0);
 
                     if (relationships.size() >= 2)
-                        System.out.println("There's duplicate record which is must be have 1 in database, error but handled");
+                        System.out.println(
+                                "There's duplicate record which is must be have 1 in database, error but handled");
                 }
-
 
                 if (relationship != null) {
                     RelationshipDto relationshipDto = new RelationshipDto(relationship);
@@ -240,7 +260,7 @@ public class UserServiceImp implements UserService {
                 }
             }
 
-            //set mutual friends of current user and viewing user
+            // set mutual friends of current user and viewing user
             person.setMutualFriends(relationshipService.getMutualFriends(person.getId(), currentUser.getId()));
 
             res.add(person);
@@ -250,7 +270,8 @@ public class UserServiceImp implements UserService {
     }
 
     public String insertPercent(String word) {
-        if (word == null || word.length() == 0) return "";
+        if (word == null || word.length() == 0)
+            return "";
         StringBuilder result = new StringBuilder();
 
         result.append('%');
@@ -263,26 +284,29 @@ public class UserServiceImp implements UserService {
         return result.toString();
     }
 
+    // FUNCTION NEWLY WRITTEN FOR ADMIN SWING
 
-    //FUNCTION NEWLY WRITTEN FOR ADMIN SWING
-    
     // new func
     @Override
     public UserDto getByIdNew(UUID userId) {
-        if (userId == null) return null;
+        if (userId == null)
+            return null;
 
         User user = userRepository.findById(userId).orElse(null);
-        if (user == null) return null;
+        if (user == null)
+            return null;
 
         return new UserDto(user);
     }
-    
+
     @Override
     public List<UserDto> searchByUsernameNew(SearchObject searchObject) {
-        if (searchObject == null) return null;
+        if (searchObject == null)
+            return null;
 
         List<UserDto> res = new ArrayList<>();
-        List<User> validUsers = userRepository.getByUserName(searchObject.getKeyWord(), searchObject.getPageSize(), searchObject.getPageIndex() - 1);
+        List<User> validUsers = userRepository.getByUserName(searchObject.getKeyWord(), searchObject.getPageSize(),
+                searchObject.getPageIndex() - 1);
         for (User user : validUsers) {
             UserDto person = new UserDto(user);
             res.add(person);
@@ -290,10 +314,10 @@ public class UserServiceImp implements UserService {
         return res;
     }
 
-    
     @Override
     public UserDto createUser(UserDto userDto) {
-        if (userDto == null) return null;
+        if (userDto == null)
+            return null;
 
         User user = new User();
 
@@ -322,7 +346,6 @@ public class UserServiceImp implements UserService {
             user.setPhoneNumber(userDto.getPhoneNumber());
         if (userDto.getDisable() != null)
             user.setDisable(userDto.getDisable());
-        
 
         // Save the user entity to the repository
         user = userRepository.save(user);
@@ -412,8 +435,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<UserDto> getUsersNotVoided() {
-//        User currentUser = this.getCurrentLoginUserEntity();
-//        if (currentUser == null) return null;
+        // User currentUser = this.getCurrentLoginUserEntity();
+        // if (currentUser == null) return null;
 
         List<UserDto> res = new ArrayList<>();
         List<User> allUsers = userRepository.findAll();
@@ -435,8 +458,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) {
-        User user =  userRepository.findByEmail(email).orElse(null);
-        if (user == null) return null;
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null)
+            return null;
         return new UserDto(user);
     }
 
@@ -449,12 +473,15 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void register(String email, String password) {
+    public void register(String email, String password, String firstName, String lastName, String MSV) {
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole("USER");
         user.setDisable(false);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setMSV(MSV);
         userRepository.save(user);
     }
 }

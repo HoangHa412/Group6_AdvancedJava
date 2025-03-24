@@ -60,6 +60,8 @@ public class User implements Serializable {
 
     private String background;
 
+    private String MSV;
+
     private boolean disable;
 
     private boolean voided;

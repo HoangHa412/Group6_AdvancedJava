@@ -106,7 +106,7 @@ public class AuthController {
     }
 
     @PostMapping("/registerPassword")
-    public ResponseEntity<?> register(@RequestBody ResetPasswordDto data) {
+    public ResponseEntity<?> register(@RequestBody RegisterPassword data) {
         String token = data.getToken();
 
         String email = tokenService.findEmailByKey(token);
@@ -116,9 +116,23 @@ public class AuthController {
 
         if (isValidPassword(data.getPassword().trim())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    "Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt và không chứa kí tự đặc biệt");
+                    "Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt");
         }
-        userService.register(email, data.getPassword());
+
+        if(data.getFirstName()==null || data.getFirstName().isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Firstname không được để trống");
+        }
+
+        if(data.getLastName()==null || data.getLastName().isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Lastname không được để trống");
+        }
+
+        if(data.getMSV()==null||data.getMSV().isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mã sinh viên không được để trống");
+        }
+
+
+        userService.register(email, data.getPassword(), data.getFirstName(), data.getLastName(), data.getMSV());
         tokenService.deleteTokenByEmail(email);
 
         return ResponseEntity.status(HttpStatus.OK).body("Đã Cài đặt mật khẩu thành công");

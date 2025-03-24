@@ -39,17 +39,13 @@ public interface UserService {
 
     void forgetPassword(String email, String password);
 
-    void register(String email, String password);
+    void register(String email, String password, String firstName,String lastName , String MSV);
 
-
-
-
-
-    //FUNCTION NEWLY WRITTEN FOR ADMIN SWING
+    // FUNCTION NEWLY WRITTEN FOR ADMIN SWING
     public List<UserDto> searchByUsernameNew(SearchObject searchObject);
-    
+
     public UserDto getByIdNew(UUID userId);
-    
+
     public UserDto createUser(UserDto userDto);
 
     public UserDto updateUserV2(UserDto userDto);
@@ -59,8 +55,5 @@ public interface UserService {
     public List<UserDto> getUsersNotVoided();
 
     public UserDto updateAccountStatus(UserDto userDto);
-
-
-
 
 }
