@@ -1,8 +1,6 @@
-import React, { memo, useEffect, useState } from 'react'
+import { memo, useEffect } from 'react'
 import { useStore } from '@/stores';
 import { observer } from 'mobx-react';
-import { toast } from 'react-toastify';
-import { useNavigate } from "react-router";
 import ConversationList from './ConversationList/ConversationList';
 import MessageList from './MessageList/MessageList';
 import InfoList from './InfoList/InfoListIndex';
@@ -11,15 +9,13 @@ import '@/common/CommonStyles.scss';
 import { Grid } from '@mui/material';
 
 function ChatIndex() {
-    const { chatStore, authStore } = useStore();
-
+    const { chatStore } = useStore();
     const {
         resetStore,
         getAllJoinedRooms,
         setIsLoading
     } = chatStore;
 
-    const navigate = useNavigate();
     useEffect(function () {
 
         setIsLoading(true);
@@ -34,7 +30,7 @@ function ChatIndex() {
 
     return (
         <div
-            className="app flex-center w-100 p-0 m-0 flex-1"
+            className="flex-1 p-0 m-0 app flex-center w-100"
         >
             <div className="messenger">
                 <Grid container spacing={0}>
@@ -49,7 +45,7 @@ function ChatIndex() {
                     </Grid>
 
                     <Grid item xs={12} sm={8} md={5} lg={6}>
-                        <div className="scrollable content p-0">
+                        <div className="p-0 scrollable content">
                             <MessageList />
                         </div>
                     </Grid>

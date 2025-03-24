@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect } from "react";
 import NavBar from "./NavBar";
 import { Outlet } from "react-router-dom";
 import { observer } from "mobx-react";
@@ -20,7 +20,6 @@ function Layout() {
         currentUser?.role === "USER" &&
         !SocketService.stompClient
       ) {
-        //inject onReceiveRoomMessage
         SocketService.initializeSocket(onReceiveRoomMessage);
       }
     }

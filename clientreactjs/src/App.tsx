@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./components/Home/HomePage";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import Layout from "./components/layout/Layout";
@@ -18,35 +17,29 @@ import "react-toastify/dist/ReactToastify.css";
 import AdminHomePage from "./components/Home/AdminHomePage";
 import LayoutAdmin from "./components/layout/LayoutAdmin";
 import AdminPostPage from "./components/Post/AdminPostPage";
-import AdminCourseResult from "./components/CourseResult/AdminCourseResult";
 import AdminUserPage from "./components/User/AdminUserPage";
 import AdminClassPage from "./components/Class/AdminClassPage";
-import CreateGroup from "./components/Group/CreateGroup";
-import DiscoverGroup from "./components/Group/DiscoverGroup";
-import MyGroup from "./components/Group/MyGroup";
-import PostOfGroup from "./components/Group/PostOfGroup";
-import GroupLayout from "./components/Group/GroupLayout";
-import GroupDetail from "./components/Group/GroupDetail";
-import GroupJoined from "./components/Group/GroupJoined";
 
 import "./DiAyTiOverridingStyles.scss";
 import SearchLayout from "./components/Search/SearchLayout";
-import SearchGroupList from "./components/Search/SearchGroupList";
 import SearchUserList from "./components/Search/SearchUserList";
-import SearchPostList from "./components/Search/SearchPostList";
-import NoData from "./components/shared/NoData";
+
 import Developing from "./components/shared/Developing";
 import UserCourseResult from "./components/UserCourse/UserCourseResult";
+import Protect from "./components/Auth/Protect";
+import RegisterConfirm from "./components/Auth/RegisterConfirm";
 
 const App = () => {
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
+        <Route path="/register">
+          <Route index element={<Register />} />
+          <Route path=":token" element={<RegisterConfirm />} />
+        </Route>
         {/* private routes */}
-        <Route>
+        <Route element={<Protect allowedRoles={['USER']} />}>
           <Route path="/" element={<Layout />}>
             {/* <Route index element={<HomePage />} /> */}
             <Route path="/profile/edit" element={<EditProfile />} />
@@ -69,8 +62,9 @@ const App = () => {
               <Route path="/search/users" element={<SearchUserList />} />
             </Route>
           </Route>
-
-          {/* Admin Route */}
+        </Route>
+        {/* Admin Route */}
+        <Route element={<Protect allowedRoles={['ADMIN']} />}>
           <Route path="/admin" element={<LayoutAdmin />}>
             <Route path="/admin" element={<AdminHomePage />} />
             <Route path="/admin/users" element={<AdminUserPage />} />

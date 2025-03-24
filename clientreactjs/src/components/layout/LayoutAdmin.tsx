@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 
 const LayoutAdmin = () => {
+
   return (
     <div className="relative flex gap-5 overflow-y-auto">
       <AdminSidebar />

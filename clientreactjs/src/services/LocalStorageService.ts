@@ -8,18 +8,13 @@ class LocalStorageService {
   }
 
   setItem(key: any, value: any) {
-    // const cookies = new Cookies();
-
     value = JSON.stringify(value);
     this.ls.setItem(key, value);
-    //cookies.set(key, value, { path: '/' });
     return true;
   }
 
   getItem(key: any) {
-    //  const cookies = new Cookies();
     let value: any = this.ls.getItem(key);
-    //let value = cookies.get(key);
     try {
       return JSON.parse(value);
     } catch (e) {

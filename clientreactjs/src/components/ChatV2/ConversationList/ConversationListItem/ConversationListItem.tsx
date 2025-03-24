@@ -1,4 +1,4 @@
-import React, { useEffect, memo, useState } from "react";
+import { useEffect, memo, useState } from "react";
 import "./ConversationListItem.css";
 import LocalStorage from "@/services/LocalStorageService";
 import { useStore } from "@/stores";
@@ -6,11 +6,11 @@ import { observer } from "mobx-react";
 import { format, parseISO } from "date-fns";
 
 function ConversationListItem(props: any) {
-  const { authStore, chatStore } = useStore();
+  const { chatStore } = useStore();
   const { setChosenRoom, chosenRoom } = chatStore;
   const currentUser = LocalStorage.getLoggedInUser();
 
-  const { id, avatar, name, code, participants, messages } = props.room;
+  const { id, avatar, name, participants, messages } = props.room;
 
   function renderConversationName() {
     if (!name || name.trim() === "") {
@@ -102,13 +102,12 @@ function ConversationListItem(props: any) {
 
   return (
     <div
-      className={`conversation-list-item ${
-        chosenRoom?.id === id && " conversation-list-item--chosen"
-      }`}
+      className={`conversation-list-item ${chosenRoom?.id === id && " conversation-list-item--chosen"
+        }`}
       onClick={handleChooseConversation}
     >
       <img className="conversation-photo" src={imagePath} alt="" />
-      <div className="conversation-info flex-1">
+      <div className="flex-1 conversation-info">
         <h1 className="conversation-title">{renderConversationName()}</h1>
         <p className="conversation-snippet">
           {renderLastMessageInConversation()}
