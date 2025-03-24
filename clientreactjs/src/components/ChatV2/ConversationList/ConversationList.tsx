@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from "react";
+import { memo } from "react";
 import ConversationSearch from "./ConversationSearch/ConversationSearch";
 import ConversationListItem from "./ConversationListItem/ConversationListItem";
 import Toolbar from "../Toolbar/Toolbar";
@@ -35,7 +35,7 @@ function ConversationList() {
                   return <ConversationListItem key={index} room={room} />;
                 })}
                 {(!joinedRooms || joinedRooms.length === 0) && !isLoading && (
-                  <div className="no-conversation p-4">
+                  <div className="p-4 no-conversation">
                     <NoData
                       title={
                         <p>
