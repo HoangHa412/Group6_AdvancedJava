@@ -182,7 +182,7 @@ public class AuthController {
 
         if (isValidPassword(data.getPassword().trim())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    "Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt và không chứa kí tự đặc biệt");
+                    "Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt");
         }
         userService.forgetPassword(email, data.getPassword());
         tokenService.deleteTokenByEmail(email);
