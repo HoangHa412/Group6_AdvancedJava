@@ -1,19 +1,15 @@
-import SessionCreatePost from "@/components/Post/SessionCreatePost";
 import { memo } from "react";
 import { format, parseISO } from "date-fns";
 import TableSkeleton from "@/components/skeleton/TableSkeleton";
 import { observer } from "mobx-react";
 import { Grid } from "@mui/material";
-import PostOfUser from "../ui/PostOfUser";
 import Icon from "../../shared/Icon";
 
 function MainProfile(props: any) {
-  const { isLoadingUser, userProfile, isCurrentUser } = props;
-
+  const { isLoadingUser, userProfile } = props;
   return (
     <Grid container spacing={2} className="py-4">
       <Grid item xs={12}
-      //  md={5} lg={4}
       >
         <div className="infoCard">
           {isLoadingUser ? (
@@ -22,15 +18,15 @@ function MainProfile(props: any) {
               length={5}
             />
           ) : (
-            <div className="h-max-content overflow-y-auto ">
+            <div className="overflow-y-auto h-max-content ">
               <div className="flex flex-col mainProfileWrapper">
-                <p className="h3-bold mb-5">Giới thiệu</p>
+                <p className="mb-5 h3-bold">Giới thiệu</p>
                 <div className="flex flex-col gap-4 text-lg">
                   <div className="flex items-center gap-3">
                     <Icon name="Code" />
                     <p>
                       Mã sinh viên:{" "}
-                      <span>{userProfile?.code || "Chưa cập nhật"}</span>
+                      <span>{userProfile?.MSV || "Chưa cập nhật"}</span>
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -81,12 +77,6 @@ function MainProfile(props: any) {
           )}
         </div>
       </Grid>
-      {/* <Grid item xs={12} md={7} lg={8}>
-        <div className={`flex-1 flex flex-col`}>
-          {isCurrentUser && <SessionCreatePost />}
-          <PostOfUser />
-        </div>
-      </Grid> */}
     </Grid>
   );
 }

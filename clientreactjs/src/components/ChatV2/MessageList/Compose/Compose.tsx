@@ -33,7 +33,7 @@ function Compose() {
     <div className="compose">
       <input
         type="text"
-        className="compose-input br-10 p-2 mr-2"
+        className="w-full p-2 mr-2 border outline-none border-slate-200 focus:border-blue-500 br-10"
         placeholder="Type a message, @name"
         value={messageContent}
         onChange={handleChangeMessageContent}
@@ -41,7 +41,7 @@ function Compose() {
       />
       <div className="flex items-center gap-2">
         <StickerList />
-        <Button variant="contained" onClick={handleSendMessage}>
+        <Button variant="contained" className="size-10" onClick={handleSendMessage}>
           <SendRoundedIcon></SendRoundedIcon>
         </Button>
       </div>

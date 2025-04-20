@@ -19,7 +19,6 @@ function ChatIndex() {
     useEffect(function () {
 
         setIsLoading(true);
-        // registerUser();
         getAllJoinedRooms()
             .finally(function () {
                 setIsLoading(false);
@@ -45,7 +44,7 @@ function ChatIndex() {
                     </Grid>
 
                     <Grid item xs={12} sm={8} md={5} lg={6}>
-                        <div className="p-0 scrollable content">
+                        <div className=" scrollable content">
                             <MessageList />
                         </div>
                     </Grid>

@@ -3,7 +3,7 @@ import "./ConversationListItem.css";
 import LocalStorage from "@/services/LocalStorageService";
 import { useStore } from "@/stores";
 import { observer } from "mobx-react";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 
 function ConversationListItem(props: any) {
   const { chatStore } = useStore();
@@ -87,11 +87,14 @@ function ConversationListItem(props: any) {
   useEffect(renderAvatar, [id, avatar]);
 
   function renderSentDate() {
-    if (messages && messages.length > 0) {
+    if (Array.isArray(messages) && messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
+      const rawDate = lastMessage?.sendDate;
 
-      if (lastMessage?.sendDate)
-        return format(parseISO(lastMessage?.sendDate), "d/M/yyyy");
+      const parsedDate = new Date(rawDate);
+      if (parsedDate) {
+        return format(parsedDate, "dd/MM/yyyy");
+      }
     }
     return "";
   }

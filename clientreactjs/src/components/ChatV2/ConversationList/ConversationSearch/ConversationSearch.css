@@ -1,8 +1,8 @@
 .conversation-search {
   padding: 10px;
   display: flex;
+  gap:20px;
   flex-direction: row;
-  justify-content: space-between;
   z-index: 99;
 }
 
@@ -10,14 +10,12 @@
   background: #f4f4f8;
   padding: 8px 10px;
   border-radius: 10px;
-  border: none;
+  outline: none;
   font-size: 14px;
-  width: 80%;
+  flex:1
 }
 
-.conversation-search-input::placeholder {
-  text-align: center;
-}
+
 
 .conversation-search-input:focus::placeholder {
   text-align: left;

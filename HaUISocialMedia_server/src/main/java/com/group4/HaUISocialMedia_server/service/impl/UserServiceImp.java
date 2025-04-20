@@ -473,7 +473,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void register(String email, String password, String firstName, String lastName, String MSV) {
+    public void register(String email, String password, String firstName, String lastName, String msv) {
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
@@ -481,7 +481,7 @@ public class UserServiceImp implements UserService {
         user.setDisable(false);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setMSV(MSV);
+        user.setMsv(msv);
         userRepository.save(user);
     }
 }

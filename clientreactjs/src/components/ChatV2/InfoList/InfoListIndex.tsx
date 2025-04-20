@@ -154,15 +154,15 @@ function InfoList() {
 
                 <div className="info-name"> {renderRoomName()} </div>
                 <div className="info-description"> {renderDescription()} </div>
-                <div className="w-100" style={{ backgroundColor: "#f4f7ff" }}>
-                  <div className="flex-center w-100 p-1">
+                <div className="w-100 bg-[#f4f7ff]">
+                  <div className="p-1 flex-center w-100">
                     <CustomizeChatIndex
                       expanded={expanded}
                       handleChangeStateAccordion={handleChangeStateAccordion}
                     />
                   </div>
 
-                  <div className="flex-center w-100 participants-container position-relative p-1">
+                  <div className="p-1 flex-center w-100 participants-container position-relative">
                     <ParticipantIndex
                       expanded={expanded}
                       handleChangeStateAccordion={handleChangeStateAccordion}
@@ -170,7 +170,7 @@ function InfoList() {
                   </div>
 
                   {!(chosenRoom?.roomType?.name === "private") && (
-                    <div className="flex-center w-100 p-1">
+                    <div className="p-1 flex-center w-100">
                       <OtherActionsIndex
                         expanded={expanded}
                         handleChangeStateAccordion={handleChangeStateAccordion}

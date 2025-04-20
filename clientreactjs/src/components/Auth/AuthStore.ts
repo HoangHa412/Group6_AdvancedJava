@@ -35,10 +35,10 @@ class AuthStore {
       throw new Error(error);
     }
   };
-  registerPassword = async ({ token, password, confirmPassword }: { token: string, password: string, confirmPassword: string }) => {
+  registerPassword = async ({ token, msv, firstName, lastName, password, confirmPassword }: { token: string, msv: string, firstName: string, lastName: string, password: string, confirmPassword: string }) => {
     try {
-      const { data } = await registerPassword({ token, password, confirmPassword });
-      toast.success("Đăng kí thành công, vui lòng kiểm tra email!", {
+      const { data } = await registerPassword({ token, msv, firstName, lastName, password, confirmPassword });
+      toast.success("Đăng kí thành công", {
         position: "top-left",
       });
       return data;

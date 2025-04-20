@@ -10,7 +10,11 @@ import { useState } from "react";
 import { Loader } from "lucide-react";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { useStore } from "@/stores";
+
 const formSchema = z.object({
+    msv: z.string().min(1, { message: "Vui lòng nhập mã sinh viên" }),
+    firstName: z.string().min(1, { message: "Vui lòng nhập tên" }),
+    lastName: z.string().min(1, { message: "Vui lòng nhập họ" }),
     newPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
     confirmPassword: z.string().min(6, { message: "Vui lòng nhập lại mật khẩu" }),
 }).refine((data) => data.newPassword === data.confirmPassword, {
@@ -27,13 +31,26 @@ function RegisterConfirm() {
     const { authStore } = useStore();
     const form = useForm<ResetPasswordForm>({
         resolver: zodResolver(formSchema),
-        defaultValues: { newPassword: "", confirmPassword: "" },
+        defaultValues: {
+            msv: "",
+            firstName: "",
+            lastName: "",
+            newPassword: "",
+            confirmPassword: ""
+        },
     });
 
     async function handleRegisterPassword(values: any) {
         try {
             setIsLoading(true);
-            await authStore.registerPassword({ token: token || '', password: values.newPassword, confirmPassword: values.confirmPassword });
+            await authStore.registerPassword({
+                token: token || '',
+                msv: values.msv,
+                firstName: values.firstName,
+                lastName: values.lastName,
+                password: values.newPassword,
+                confirmPassword: values.confirmPassword
+            });
         } catch (error) {
             toast.error("Có lỗi xảy ra, vui lòng thử lại!");
         } finally {
@@ -67,9 +84,45 @@ function RegisterConfirm() {
                         </h1>
                     </div>
                 </div>
-                <h2 className="mb-4 text-2xl font-semibold text-center text-slate-500">Tạo Mật Khẩu Mới</h2>
+                <h2 className="mb-4 text-2xl font-semibold text-center text-slate-500">Tạo Tài Khoản Mới</h2>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <FormField
+                            control={form.control}
+                            name="msv"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder="Mã sinh viên" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="lastName"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder="Họ" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="firstName"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input placeholder="Tên" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <FormField
                             control={form.control}
                             name="newPassword"
@@ -102,7 +155,7 @@ function RegisterConfirm() {
                         </p>
                         <Button disabled={isLoading} type="submit" className="w-full transition-all duration-300 bg-blue-700 hover:bg-blue-900">
                             <HowToRegIcon className="mr-2" />
-                            {isLoading ? <Loader /> : "Tạo mật khẩu"}
+                            {isLoading ? <Loader className="animate-spin" /> : "Tạo tài khoản"}
                         </Button>
                     </form>
                 </Form>

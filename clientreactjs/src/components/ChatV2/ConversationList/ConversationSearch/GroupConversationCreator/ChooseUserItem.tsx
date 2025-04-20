@@ -1,20 +1,12 @@
 import { observer } from "mobx-react";
-import React, { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { ListItem, ListItemAvatar, ListItemButton, ListItemText, Checkbox, Avatar } from '@mui/material';
-import { useStore } from "@/stores";
 
 function ChooseUserItem(props: any) {
     const { labelId, user, joinUserIds, setJoinUserIds } = props;
 
     const [imagePath, setImagePath] = useState(user?.avatar);
-    useEffect(function () {
-        if (user && user.avatar && user.avatar != "") {
-            // const imageSrcPromise = getAvatarSrc(user.avatar);
-            // imageSrcPromise.then(function (data) {
-            //     setImagePath(data);
-            // })
-        }
-    }, []);
+
 
     function handleChangeJoinUserIds() {
         const currentUserId = user.id;
@@ -52,7 +44,7 @@ function ChooseUserItem(props: any) {
                         src={imagePath}
                     />
                 </ListItemAvatar>
-                <ListItemText id={labelId} primary={user.username} color='black' />
+                <ListItemText id={labelId} primary={`${user.lastName} ${user.firstName}`} color='black' />
             </ListItemButton>
         </ListItem>
     );

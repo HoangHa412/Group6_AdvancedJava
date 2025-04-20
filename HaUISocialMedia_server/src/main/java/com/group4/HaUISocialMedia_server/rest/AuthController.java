@@ -119,20 +119,19 @@ public class AuthController {
                     "Mật khẩu phải có ít nhất 8 kí tự, bao gồm 1 chữ cái in hoa, 1 chữ số, 1 kí tự đặc biệt");
         }
 
-        if(data.getFirstName()==null || data.getFirstName().isEmpty()){
+        if (data.getFirstName() == null || data.getFirstName().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Firstname không được để trống");
         }
 
-        if(data.getLastName()==null || data.getLastName().isEmpty()){
+        if (data.getLastName() == null || data.getLastName().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Lastname không được để trống");
         }
 
-        if(data.getMSV()==null||data.getMSV().isEmpty()){
+        if (data.getMsv() == null || data.getMsv().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mã sinh viên không được để trống");
         }
 
-
-        userService.register(email, data.getPassword(), data.getFirstName(), data.getLastName(), data.getMSV());
+        userService.register(email, data.getPassword(), data.getFirstName(), data.getLastName(), data.getMsv());
         tokenService.deleteTokenByEmail(email);
 
         return ResponseEntity.status(HttpStatus.OK).body("Đã Cài đặt mật khẩu thành công");

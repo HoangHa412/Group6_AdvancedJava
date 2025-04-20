@@ -36,7 +36,7 @@ function ConversationSearch() {
     <div className="conversation-search w-100">
       <input
         type="text"
-        className="conversation-search-input"
+        className="border conversation-search-input border-slate-300 focus:border-blue-500"
         placeholder="Tìm kiếm cuộc trò chuyện..."
         value={searchKeyword}
         onChange={handleChange}

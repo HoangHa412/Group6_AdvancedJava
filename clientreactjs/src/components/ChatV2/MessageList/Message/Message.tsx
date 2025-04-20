@@ -1,13 +1,16 @@
-import React, { memo, useState, useEffect } from "react";
+import { memo } from "react";
 import "./Message.scss";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { observer } from "mobx-react";
 import { useStore } from "@/stores";
-import { Sticker } from "lucide-react";
 import { StickerList } from "../../StickerList";
 
 function lightOrDark(color: any) {
   var r: any, g: any, b: any, hsp: any;
+
+  if (!color || typeof color !== 'string' || !color.startsWith('#')) {
+    return true; // Default to light mode
+  }
 
   color = +("0x" + color?.slice(1)?.replace(color?.length < 5 && /./g, "$&$&"));
 
@@ -18,10 +21,10 @@ function lightOrDark(color: any) {
   hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
 
   if (hsp > 127.5) {
-    // sang
+    // Light color
     return true;
   } else {
-    //toi
+    // Dark color
     return false;
   }
 }
@@ -42,25 +45,10 @@ function Message(props: any) {
     photo ||
     "https://www.treasury.gov.ph/wp-content/uploads/2022/01/male-placeholder-image.jpeg";
 
-  const { authStore, chatStore } = useStore();
+  const { chatStore } = useStore();
   const { chosenRoom } = chatStore;
-  // const [bubbleBackground, setBubbleBackground] = useState(chosenRoom?.color);
 
-  // useEffect(() => {
-  //   bubbleBackground && setBubbleBackground(bubbleBackground);
-  //   let bubble = document.querySelectorAll(".message.mine .bubble-container .bubble") as NodeListOf<HTMLElement>;
-  //   bubble.forEach(item => {
-  //     if (item) {
-  //       item.style.backgroundColor = bubbleBackground;
-  //       if (lightOrDark(bubbleBackground)) {
-  //         item.style.color = "black";
-  //       } else {
-  //         item.style.color = "white";
-  //       }
-  //     }
-  //   })
-  // }, [chosenRoom?.id]);
-
+  // Message style for user's messages (with color from room)
   let mineMessageWithColor = {};
   if (isMine && type == "chat" && chosenRoom?.color) {
     let fontTheme = "white";
@@ -77,15 +65,15 @@ function Message(props: any) {
   return (
     <div
       className={[
-        "message",
-        `${isMine ? "mine" : ""}`,
+        "message mb-5",
+        `${isMine ? "mine" : "other"}`, // Added explicit "other" class for non-mine messages
         `${startsSequence ? "start" : ""}`,
         `${endsSequence ? "end" : ""}`,
       ].join(" ")}
     >
       {type == "notification" && (
         <div className="notification">
-          {format(parseISO(sendDate), "do MMMM yyyy")} <br />
+          {format(new Date(sendDate), "do MMMM yyyy")} <br />
           {data}
         </div>
       )}
@@ -99,7 +87,7 @@ function Message(props: any) {
           {startsSequence && <div className="username">{author}</div>}
           <div className="user-container">
             {startsSequence && !isMine && (
-              <img className="thumbnail" src={imagePath} alt=""></img>
+              <img className="thumbnail" src={imagePath} alt="user avatar" />
             )}
             <div className="bubble-container">
               <div className="bubble" style={mineMessageWithColor}>
@@ -115,13 +103,13 @@ function Message(props: any) {
           {startsSequence && <div className="username">{author}</div>}
           <div className="user-container">
             {startsSequence && !isMine && (
-              <img className="thumbnail" src={imagePath} alt=""></img>
+              <img className="thumbnail" src={imagePath} alt="user avatar" />
             )}
             <div className="bubble-container">
               <img
                 src={StickerList[data - 1]?.key}
                 alt="sticker"
-                className="w-16 object-cover mb-3 mr-1"
+                className="object-cover w-16 mb-3 mr-1"
               />
             </div>
           </div>

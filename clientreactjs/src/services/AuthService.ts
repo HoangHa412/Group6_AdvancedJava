@@ -13,7 +13,7 @@ export function authenticateUser(user: any) {
     return axios.post(url, user);
 }
 
-export function registerPassword({ token, password, confirmPassword }: { token: string, password: string, confirmPassword: string }) {
+export function registerPassword({ token, msv, firstName, lastName, password, confirmPassword }: { token: string, msv: string, firstName: string, lastName: string, password: string, confirmPassword: string }) {
     const url = API_PATH + '/registerPassword';
-    return axios.post(url, { token, password, confirmPassword });
+    return axios.post(url, { token, msv, firstName, lastName, password, confirmPassword });
 }

@@ -44,14 +44,7 @@ class ChatStore {
         messageType: { name: "chat" },
         user: currentUser,
       };
-      console.log("msg content: " + messageContent);
 
-      //send message via stompclient
-      // this?.stompClient?.send(
-      //   "/messenger/privateMessage",
-      //   {},
-      //   JSON.stringify(chatMessage)
-      // );
 
       //send message via api
       const { data: sentMessage } = await sendMessage(chatMessage);
@@ -84,13 +77,6 @@ class ChatStore {
         user: currentUser,
       };
       console.log("msg content: " + messageContent);
-
-      //send message via stompclient
-      // this?.stompClient?.send(
-      //   "/messenger/privateMessage",
-      //   {},
-      //   JSON.stringify(chatMessage)
-      // );
 
       //send message via api
       const { data: sentMessage } = await sendMessage(chatMessage);
@@ -201,7 +187,6 @@ class ChatStore {
     try {
       this.setIsLoading(true);
       const { data } = await createGroupChat(room);
-      // console.log("new group chat: ", data);
       await this.getAllJoinedRooms();
 
       this.setIsLoading(false);
@@ -229,14 +214,10 @@ class ChatStore {
 
       await this.getAllJoinedRooms();
 
-      console.log("updated group chat: ", data);
-
-      // await this.getAllJoinedRooms();
       this.setIsLoading(false);
 
       return data;
     } catch (err: any) {
-      console.log(err);
       this.setIsLoading(false);
       toast.error(
         "Cập nhật thông tin cuộc trò chuyện có lỗi, vui lòng thử lại sau"
@@ -374,7 +355,6 @@ class ChatStore {
       const latestMessage = this.getLatestAvailableMessage();
       if (latestMessage && latestMessage?.id) {
         const { data } = await findTop20PreviousByMileStone(latestMessage?.id);
-        // console.log(data)
         if (data && data?.length < 20) this.canLoadMore = false;
 
         this.chosenRoom.messages = [...data, ...this.chosenRoom.messages];

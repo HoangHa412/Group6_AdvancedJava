@@ -23,7 +23,7 @@ const Stickers = () => {
       </div>
       {isStickerListVisible && (
         <div className="absolute bottom-full right-0 z-10 mt-2 bg-white border border-gray-300 p-2 w-[500px] h-[400px] overflow-scroll">
-          <div className="flex gap-3 flex-wrap w-full h-full">
+          <div className="flex flex-wrap w-full h-full gap-3">
             {StickerList.map((sticker, index) => (
               <div
                 key={index}
@@ -32,7 +32,7 @@ const Stickers = () => {
                 <img
                   src={sticker.key}
                   alt="sticker"
-                  className="size-16 object-cover"
+                  className="object-cover size-16"
                 />
               </div>
             ))}
