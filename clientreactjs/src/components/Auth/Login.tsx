@@ -50,7 +50,7 @@ function Login() {
 
       if (data.scope === "USER") navigate("/messenger-v2");
       else if (data.scope === "ADMIN") {
-        navigate("/admin");
+        // navigate("/admin");
         toast.success("Đã đăng nhập thành công phía quản trị viên, vui lòng chuyển sang phần mềm Swing để thực hiện các chức năng của quản trị viên! ");
       }
       else {
