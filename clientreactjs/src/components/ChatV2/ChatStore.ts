@@ -171,7 +171,9 @@ class ChatStore {
   searchJoinedRooms = async (keyword: string) => {
     try {
       const searchObject = {
-        keyword: keyword,
+        keyWord: keyword,
+        pageSize: 100,
+        pageIndex: 1
       };
       const { data } = await searchJoinedRooms(searchObject);
       this.joinedRooms = data;
