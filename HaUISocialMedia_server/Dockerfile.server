@@ -2,8 +2,8 @@
 
 FROM openjdk:21-jdk
 
-cmd mkdir -p /opt
-cmd mkdir -p /opt/conf
+RUN mkdir -p /opt
+RUN mkdir -p /opt/conf
 
 
 COPY target/authen-service-0.0.1-SNAPSHOT.jar /opt/authen-service-0.0.1-SNAPSHOT.jar
@@ -13,4 +13,4 @@ COPY src/main/resources/mail /opt/conf/mail
 WORKDIR /opt
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/authen-service-0.0.1-SNAPSHOT.jar", "--spring.config.additional-location=/opt/conf/"]
+ENTRYPOINT ["java", "-jar", "/opt/authen-service-0.0.1-SNAPSHOT.jar", "--spring.config.additional-location=/opt/conf/"]
