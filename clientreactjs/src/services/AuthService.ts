@@ -17,3 +17,13 @@ export function registerPassword({ token, msv, firstName, lastName, password, co
     const url = API_PATH + '/registerPassword';
     return axios.post(url, { token, msv, firstName, lastName, password, confirmPassword });
 }
+
+export function forgotPassword(email: string) {
+    const url = API_PATH + '/forgotPassword';
+    return axios.post(url, { email });
+}
+
+export function resetPassword(token: string, password: string, confirmPassword: string) {
+    const url = API_PATH + '/resetPassword';
+    return axios.post(url, { token, password, confirmPassword });
+}

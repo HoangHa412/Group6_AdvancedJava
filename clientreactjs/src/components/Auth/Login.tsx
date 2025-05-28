@@ -110,6 +110,11 @@ function Login() {
                 </FormItem>
               )}
             />
+            <p className=" text-start">
+              <Link to="/forgot-password" className="text-blue-600 hover:text-blue-800">
+                Quên mật khẩu?
+              </Link>
+            </p>
             <p className="mr-5 text-end">
               Chưa có tài khoản?{" "}
               <Link to="/register" className="text-blue-600 hover:text-blue-800">

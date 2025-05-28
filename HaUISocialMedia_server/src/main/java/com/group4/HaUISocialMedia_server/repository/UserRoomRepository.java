@@ -27,7 +27,5 @@ public interface UserRoomRepository extends JpaRepository<UserRoom, UUID> {
     @Query("select userRoom from UserRoom userRoom where userRoom.user.id = ?1 and userRoom.room.id = ?2")
     public UserRoom findByUserIdAndRoomId(UUID userId, UUID roomId);
 
-//    @Query("select new com.chatapp.chat.model.UserRoomDTO(entity) from UserRoom entity where (entity.room.name like %?1% or entity.user.username like %?1% or entity.user.fullname like %?1% or entity.nickName like %?1%)")
-//    public List<UserRoomDTO> searchRoomByKeyword(String keyword);
 }
 

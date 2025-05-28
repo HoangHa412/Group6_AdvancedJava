@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { toast } from "react-toastify";
 import LocalStorage from "@/services/LocalStorageService";
-import { authenticateUser, registerPassword, registerUser } from "../../services/AuthService";
+import { authenticateUser, registerPassword, registerUser, forgotPassword, resetPassword } from "../../services/AuthService";
 import axios from "axios";
 import { getCurrentLoginUser } from "@/services/UserService";
 import SocketService from "@/services/SocketService";
@@ -47,6 +47,37 @@ class AuthStore {
       toast.info(error.message, {
         position: "top-left",
       });
+      throw new Error(error);
+    }
+  }
+
+  forgotPassword = async (email: string) => {
+    try {
+      const { data } = await forgotPassword(email);
+      toast.success("Email đặt lại mật khẩu đã được gửi! Vui lòng kiểm tra hộp thư của bạn.", {
+        position: "top-left",
+      });
+      return data;
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
+        toast.error("Email không tồn tại trong hệ thống!", {
+          position: "top-left",
+        });
+      } else {
+        toast.error("Có lỗi xảy ra, vui lòng thử lại!", {
+          position: "top-left",
+        });
+      }
+      throw new Error(error);
+    }
+  }
+
+
+  resetPassword = async (token: string, password: string, confirmPassword: string) => {
+    try {
+      const { data } = await resetPassword(token, password, confirmPassword);
+      return data;
+    } catch (error: any) {
       throw new Error(error);
     }
   }

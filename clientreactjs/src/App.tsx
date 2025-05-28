@@ -28,15 +28,21 @@ import Developing from "./components/shared/Developing";
 import UserCourseResult from "./components/UserCourse/UserCourseResult";
 import Protect from "./components/Auth/Protect";
 import RegisterConfirm from "./components/Auth/RegisterConfirm";
-
+import ForgotPassword from "./components/Auth/Forgot-Password";
+import ForgotPasswordConfirm from "./components/Auth/Forgot-PasswordCF";
 const App = () => {
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register">
           <Route index element={<Register />} />
           <Route path=":token" element={<RegisterConfirm />} />
+        </Route>
+        <Route path="/reset">
+          <Route index element={<ForgotPasswordConfirm />} />
+          <Route path=":token" element={<ForgotPasswordConfirm />} />
         </Route>
         {/* private routes */}
         <Route element={<Protect allowedRoles={['USER']} />}>
