@@ -1,5 +1,4 @@
-import { Input } from "@mui/material";
-import { Search } from "lucide-react";
+
 
 import Pagination from "./ui/Pagination";
 

@@ -75,7 +75,6 @@ function InfoList() {
           }
         }
 
-        // console.log(chattingPerson);
         //handle render for private chat
         if (
           chattingPerson &&

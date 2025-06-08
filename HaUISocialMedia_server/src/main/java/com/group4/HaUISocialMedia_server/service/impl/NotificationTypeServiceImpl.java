@@ -47,8 +47,6 @@ public class NotificationTypeServiceImpl implements NotificationTypeService {
         notificationType.setName(notificationTypeDto.getName());
         notificationType.setDescription(notificationTypeDto.getDescription());
 
-        //if(notificationTypeDto.getNotificationsDto() != null)
-        //notificationType.setNotifications();
         return new NotificationTypeDto(notificationTypeRepository.save(notificationType));
     }
 
@@ -62,8 +60,7 @@ public class NotificationTypeServiceImpl implements NotificationTypeService {
         notificationType.setCode(notificationTypeDto.getCode());
         notificationType.setName(notificationTypeDto.getName());
         notificationType.setDescription(notificationTypeDto.getDescription());
-//              if(notificationTypeDto.getNotificationsDto() != null)
-//        notificationType.setNotifications(notificationTypeDto.getNotificationsDto().stream().map(NotificationDto::new));
+
         return new NotificationTypeDto(notificationTypeRepository.saveAndFlush(notificationType));
     }
 

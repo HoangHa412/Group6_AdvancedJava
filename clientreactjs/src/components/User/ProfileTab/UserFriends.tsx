@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo} from "react";
 import { useParams } from "react-router-dom";
 import FriendOfUser from "@/components/Relationship/FriendOfUser";
 import { observer } from "mobx-react";

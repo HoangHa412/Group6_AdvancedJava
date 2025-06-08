@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo} from "react";
 import { useParams } from "react-router-dom";
 import UserCourseResult from "../../CourseResult/UserCourseResult";
 import { observer } from "mobx-react";

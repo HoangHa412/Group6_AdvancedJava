@@ -23,8 +23,6 @@ public class NotificationController {
 
     @PostMapping("/paging")
     public ResponseEntity<Set<NotificationDto>> pagingNotification(@RequestBody SearchObject searchObject) {
-//        Set<NotificationDto> res = notificationService.getAnyNotification(searchObject);
-
         Set<NotificationDto> res = notificationService.pagingNotification(searchObject);
         if (res == null)
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

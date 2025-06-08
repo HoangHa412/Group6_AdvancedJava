@@ -95,7 +95,6 @@ class AuthStore {
       this.setSession(data?.accessToken);
       this.setUser(userData);
 
-      // this.connectToSocket();
       return data;
     } catch (error: any) {
       if (error?.response?.status === 401)

@@ -49,7 +49,7 @@ public class UserEditDialog extends JDialog {
         gbc.weighty = 1.0;
 
         // Panel bên trái (1/3 chiều rộng)
-        JPanel leftPanel = new JPanel(null); 
+        JPanel leftPanel = new JPanel(null);
         initLeftPanel(leftPanel);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -59,7 +59,7 @@ public class UserEditDialog extends JDialog {
         contentPanel.add(leftPanel, gbc);
 
         // Panel bên phải (2/3 chiều rộng)
-        JPanel rightPanel = new JPanel(null); 
+        JPanel rightPanel = new JPanel(null);
         initRightPanel(rightPanel);
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -69,10 +69,11 @@ public class UserEditDialog extends JDialog {
         contentPanel.add(rightPanel, gbc);
 
         add(contentPanel);
-        
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(UserCreateDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -81,12 +82,12 @@ public class UserEditDialog extends JDialog {
         lblAvatar = new JLabel("Avatar", SwingConstants.CENTER);
         lblAvatar.setBounds(30, 10, 150, 150);
         lblAvatar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        if (userDto.getAvatar()!= null && !userDto.getAvatar().isEmpty()) {
+        if (userDto.getAvatar() != null && !userDto.getAvatar().isEmpty()) {
             try {
                 ImageIcon avatarIcon = new ImageIcon(new URL(userDto.getAvatar()));
                 Image image = avatarIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
                 lblAvatar.setIcon(new ImageIcon(image));
-                lblAvatar.setText(""); 
+                lblAvatar.setText("");
             } catch (Exception e) {
                 e.printStackTrace();
                 lblAvatar.setText("Lỗi load ảnh");
@@ -107,7 +108,7 @@ public class UserEditDialog extends JDialog {
 
         JButton btnUpdate = new JButton("Cập nhật");
         btnUpdate.setBounds(10, 250, 190, 35);
-        btnUpdate.setBackground(new Color(204,255,255));
+        btnUpdate.setBackground(new Color(204, 255, 255));
         btnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,7 +119,7 @@ public class UserEditDialog extends JDialog {
 
         JButton btnDelete = new JButton("Xóa");
         btnDelete.setBounds(10, 300, 190, 35);
-        btnDelete.setBackground(new Color(204,255,255));
+        btnDelete.setBackground(new Color(204, 255, 255));
         btnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -129,7 +130,7 @@ public class UserEditDialog extends JDialog {
 
         JButton btnCancel = new JButton("Hủy bỏ");
         btnCancel.setBounds(10, 450, 190, 35);
-        btnCancel.setBackground(new Color(204,255,255));
+        btnCancel.setBackground(new Color(204, 255, 255));
         btnCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -201,7 +202,7 @@ public class UserEditDialog extends JDialog {
         JLabel genderLabel = new JLabel("Gender:");
         genderLabel.setBounds(40, y, 100, 30);
         panel.add(genderLabel);
-        cbGender = new JComboBox<>(new String[]{"Male", "Female"});
+        cbGender = new JComboBox<>(new String[] { "Male", "Female" });
         cbGender.setBounds(150, y, 275, 30);
         cbGender.setSelectedItem(userDto.isGender() ? "Male" : "Female");
         panel.add(cbGender);
@@ -218,7 +219,7 @@ public class UserEditDialog extends JDialog {
         JLabel statusLabel = new JLabel("Status:");
         statusLabel.setBounds(40, y, 100, 30);
         panel.add(statusLabel);
-        cbStatus = new JComboBox<>(new String[]{"Active", "Disabled"});
+        cbStatus = new JComboBox<>(new String[] { "Active", "Disabled" });
         cbStatus.setBounds(150, y, 275, 30);
         cbStatus.setSelectedItem(userDto.getDisable() ? "Disabled" : "Active");
         panel.add(cbStatus);
@@ -229,7 +230,8 @@ public class UserEditDialog extends JDialog {
         String email = txtEmail.getText().trim();
 
         if (username.isEmpty() || email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ các thông tin bắt buộc (Username, Email)", "Missing Information", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng điền đầy đủ các thông tin bắt buộc (Username, Email)",
+                    "Missing Information", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -261,16 +263,19 @@ public class UserEditDialog extends JDialog {
 
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Không thể cập nhật thông tin người dùng", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Không thể cập nhật thông tin người dùng", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi khi cập nhật thông tin người dùng", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lỗi khi cập nhật thông tin người dùng", "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void deleteUser() {
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa người dùng này?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa người dùng này?", "Confirm Delete",
+                JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
                 UserDto voidedUser = userService.deleteUserByVoided(userDto);
@@ -278,21 +283,15 @@ public class UserEditDialog extends JDialog {
                     tableModel.removeRow(rowIndex);
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this, "Không thể xóa thông tin người dùng", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Không thể xóa thông tin người dùng", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Lỗi khi xóa thông tin người dùng", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Lỗi khi xóa thông tin người dùng", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-//    public static void main(String[] args) {
-//        // Sample usage to test the dialog
-//        UserService userService = new UserService();
-//        UserDto userDto = new UserDto();
-//        DefaultTableModel tableModel = new DefaultTableModel();
-//        UserEditDialog dialog = new UserEditDialog(userService, userDto, tableModel, 0);
-//        dialog.setVisible(true);
-//    }
 }

@@ -1,9 +1,7 @@
 import {
   Table,
   TableBody,
-  // TableCaption,
   TableCell,
-  // TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -15,7 +13,7 @@ import DeleteUser from "./ui/admin/DeleteUser";
 import UserDetail from "./ui/admin/UserDetail";
 import BlockUser from "./ui/BlockUser";
 import UnBlockUser from "./ui/UnBlockUser";
-// import UpdateClass from "./UpdateStatusUser";
+
 type Props = {
   userData: any;
   isLoading: boolean;

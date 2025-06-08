@@ -69,12 +69,6 @@ public class RelationshipServiceImpl implements RelationshipService {
 
         Relationship savedEntity = relationshipRepository.save(entity);
 
-        // set Relationship
-        // UserDto recieverDto = new UserDto(receiver);
-        // RelationshipDto relationshipDto = new RelationshipDto(entity);
-        // recieverDto.setRelationshipDto(relationshipDto);
-
-        //
         NotificationType notificationType = notificationTypeService.getNotificationTypeEntityByName("Friend");
 
         Notification notification = new Notification();
@@ -87,7 +81,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         Notification savedNoti = notificationRepository.save(notification);
         NotificationDto willSendNoti = new NotificationDto(savedNoti);
 
-        // send this noti via socket (do later)
         simpMessagingTemplate.convertAndSendToUser(receiver.getId().toString(), "/notification", willSendNoti);
         return new RelationshipDto(savedEntity);
     }
@@ -107,12 +100,10 @@ public class RelationshipServiceImpl implements RelationshipService {
         chatRoom.setRelationship(entity);
         chatRoom.setCreateDate(new Date());
 
-        // save room to db, now room is existed
         Room savedRoom = roomRepository.save(chatRoom);
         savedRelationship.setRoom(savedRoom);
         savedRelationship = relationshipRepository.save(savedRelationship);
 
-        // add requestSender to room
         User requestSender = savedRelationship.getRequestSender();
         UserRoom userRoom1 = new UserRoom();
         userRoom1.setUser(requestSender);
@@ -121,7 +112,6 @@ public class RelationshipServiceImpl implements RelationshipService {
 
         userRoomRepository.save(userRoom1);
 
-        // add receiver to room
         User receiver = savedRelationship.getReceiver();
         UserRoom userRoom2 = new UserRoom();
         userRoom2.setUser(receiver);
@@ -142,16 +132,8 @@ public class RelationshipServiceImpl implements RelationshipService {
         Notification savedNoti = notificationRepository.save(notification);
         NotificationDto willSendNoti = new NotificationDto(savedNoti);
 
-        // send this noti via socket (do later)
         simpMessagingTemplate.convertAndSendToUser(requestSender.getId().toString(), "/notification", willSendNoti);
 
-        // set Relationship
-        // UserDto recieverDto = new UserDto(requestSender);
-        // RelationshipDto relationshipDto = new RelationshipDto(entity);
-        // recieverDto.setRelationshipDto(relationshipDto);
-
-        // create very first messages for a room
-        // common messageType is chat
         MessageType messageTypeNoti = messageTypeService.getMessageTypeEntityByName("notification");
         if (messageTypeNoti == null)
             return null;
@@ -164,28 +146,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         acFriendMessage.setRoom(savedRoom);
 
         messageRepository.save(acFriendMessage);
-
-        // //join messageType
-        // MessageType joinMessageType =
-        // messageTypeService.getMessageTypeEntityByName("join");
-        //
-        // Message senderJoinMessage = new Message();
-        // senderJoinMessage.setSendDate(new Date());
-        // senderJoinMessage.setContent(requestSender.getUsername() + " đã tham gia cuộc
-        // trò chuyện");
-        // senderJoinMessage.setMessageType(joinMessageType);
-        // senderJoinMessage.setRoom(savedRoom);
-        //
-        // messageRepository.save(senderJoinMessage);
-        //
-        // Message recieverJoinMessage = new Message();
-        // recieverJoinMessage.setSendDate(new Date());
-        // recieverJoinMessage.setContent(receiver.getUsername() + " đã tham gia cuộc
-        // trò chuyện");
-        // recieverJoinMessage.setMessageType(joinMessageType);
-        // recieverJoinMessage.setRoom(savedRoom);
-        //
-        // messageRepository.save(recieverJoinMessage);
 
         return new RelationshipDto(savedRelationship);
     }
@@ -202,7 +162,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         for (Relationship relationship : response) {
             RelationshipDto rela = new RelationshipDto(relationship);
 
-            // set mutual friends of current user and viewing user
             rela.getRequestSender()
                     .setMutualFriends(getMutualFriends(rela.getRequestSender().getId(), currentUser.getId()));
 
@@ -311,10 +270,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         for (User user : response) {
             UserDto person = new UserDto(user);
 
-            // //set mutual friends of current user and viewing user
-            // person.setMutualFriends(getMutualFriends(person.getId(),
-            // currentUser.getId()));
-
             if (searchObject.getKeyWord() != null && searchObject.getKeyWord().length() > 0) {
                 if (containsKeyword(searchObject.getKeyWord(), user))
                     res.add(person);
@@ -381,9 +336,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         relationshipRepository.deleteById(relationshipId);
         // delete room
         roomRepository.deleteById(entity.getRoom().getId());
-        // Room room = roomRepository.findById(entity.getRoom().getId()).orElse(null);
-        // entity.setRoom(room);
-        // relationshipRepository.save(entity);
         return null;
     }
 
@@ -401,14 +353,6 @@ public class RelationshipServiceImpl implements RelationshipService {
                 entity.getRequestSender().getId());
         // delete relationship
         relationshipRepository.deleteById(relationshipId);
-        // Relationship relationship =
-        // relationshipRepository.findById(relationshipId).orElse(null);
-        // RelationshipDto relationshipDto = null;
-        // if(relationship == null){
-        // return null;
-        // }else{
-        // relationshipDto = new RelationshipDto(relationship);
-        // }
 
         return null;
     }

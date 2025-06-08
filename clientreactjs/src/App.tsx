@@ -44,12 +44,9 @@ const App = () => {
           <Route index element={<ForgotPasswordConfirm />} />
           <Route path=":token" element={<ForgotPasswordConfirm />} />
         </Route>
-        {/* private routes */}
         <Route element={<Protect allowedRoles={['USER']} />}>
           <Route path="/" element={<Layout />}>
-            {/* <Route index element={<HomePage />} /> */}
             <Route path="/profile/edit" element={<EditProfile />} />
-
             <Route path="/friends" element={<FriendPage />} />
             <Route path="/suggest-friends" element={<SuggestFriendPage />} />
             <Route path="/add-friends" element={<RequestFriendPage />} />
@@ -62,14 +59,12 @@ const App = () => {
             <Route path="/celebrate" element={<Developing />} />
             <Route path="/saved" element={<Developing />} />
 
-            {/* Search Route */}
             <Route path="/search" element={<SearchLayout />}>
               <Route path="/search" element={<SearchPage />} />
               <Route path="/search/users" element={<SearchUserList />} />
             </Route>
           </Route>
         </Route>
-        {/* Admin Route */}
         <Route element={<Protect allowedRoles={['ADMIN']} />}>
           <Route path="/admin" element={<LayoutAdmin />}>
             <Route path="/admin" element={<AdminHomePage />} />

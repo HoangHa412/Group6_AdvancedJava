@@ -18,7 +18,6 @@ import { useStore } from "@/stores";
 import { toast } from "react-toastify";
 import LoginIcon from '@mui/icons-material/Login';
 
-
 const formSchema = z.object({
   email: z.string().min(1, {
     message: "Tên đăng nhập là bắt buộc",
@@ -50,7 +49,6 @@ function Login() {
 
       if (data.scope === "USER") navigate("/messenger-v2");
       else if (data.scope === "ADMIN") {
-        // navigate("/admin");
         toast.success("Đã đăng nhập thành công phía quản trị viên, vui lòng chuyển sang phần mềm Swing để thực hiện các chức năng của quản trị viên! ");
       }
       else {
@@ -118,7 +116,6 @@ function Login() {
             <p className="mr-5 text-end">
               Chưa có tài khoản?{" "}
               <Link to="/register" className="text-blue-600 hover:text-blue-800">
-                {/* <HowToRegIcon className="mr-4" /> */}
                 Đăng ký
               </Link>
             </p>

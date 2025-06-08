@@ -26,13 +26,9 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService authService;
-
     private final UserService userService;
-
     private final UserRepository userRepository;
-
     private final MailService mailService;
-
     private final TokenService tokenService;
 
     @Value("${registers.token.urlveryfyToken}")
@@ -52,7 +48,6 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<JwtAuthResponse> authenticate(@RequestBody LoginDto loginDto) {
-        // Check if user exists and is not disabled first
         if (userRepository.getStatusByEmail(loginDto.getEmail())) {
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         }
@@ -190,23 +185,18 @@ public class AuthController {
     }
 
     private boolean isValidPassword(@NotNull String password) {
-        // Check character length
         if (password.length() < 8) {
             return true;
         }
-        // Check character must least one digit
         if (!password.matches(".*\\d.*")) {
             return true;
         }
-        // Check character must least one lowercase letter
         if (!password.matches(".*[a-z].*")) {
             return true;
         }
-        // Check character must least one uppercase letter
         if (!password.matches(".*[A-Z].*")) {
             return true;
         }
-        // Check character must least one special character
         return !password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
     }
 }
