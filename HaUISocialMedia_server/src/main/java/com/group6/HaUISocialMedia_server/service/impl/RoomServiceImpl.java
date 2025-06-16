@@ -9,12 +9,10 @@ import com.group6.HaUISocialMedia_server.repository.UserRoomRepository;
 import com.group6.HaUISocialMedia_server.service.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.*;
 
 @Service
@@ -83,8 +81,6 @@ public class RoomServiceImpl implements RoomService {
         room.setColor(dto.getColor());
         RoomType roomType = roomTypeRepository.findByName("public");
         room.setRoomType(roomType);
-        // room.setRelationship(dt);
-        // room.setRoomType();
         return new RoomDto(roomRepository.save(room));
     }
 
@@ -104,7 +100,6 @@ public class RoomServiceImpl implements RoomService {
         if (dto.getName() != null && !dto.getName().equals(room.getName())) {
             room.setName(dto.getName());
 
-            // notify other users that props of room has been changed
             MessageDto messageDto = new MessageDto();
             messageDto.setRoom(dto);
             messageDto.setContent(
@@ -118,7 +113,6 @@ public class RoomServiceImpl implements RoomService {
         if (dto.getAvatar() != null && !dto.getAvatar().equals(room.getAvatar())) {
             room.setAvatar(dto.getAvatar());
 
-            // notify other users that props of room has been changed
             MessageDto messageDto = new MessageDto();
             messageDto.setRoom(dto);
             messageDto.setContent(
@@ -134,7 +128,6 @@ public class RoomServiceImpl implements RoomService {
         if (dto.getDescription() != null && !dto.getDescription().equals(room.getDescription())) {
             room.setDescription(dto.getDescription());
 
-            // notify other users that props of room has been changed
             MessageDto messageDto = new MessageDto();
             messageDto.setRoom(dto);
             messageDto.setContent(currentUser.getLastName() + "" + currentUser.getFirstName()
@@ -148,7 +141,6 @@ public class RoomServiceImpl implements RoomService {
         if (dto.getColor() != null && !dto.getColor().equals(room.getColor())) {
             room.setColor(dto.getColor());
 
-            // notify other users that props of room has been changed
             MessageDto messageDto = new MessageDto();
             messageDto.setRoom(dto);
             messageDto.setContent(
@@ -249,7 +241,6 @@ public class RoomServiceImpl implements RoomService {
 
         Room roomChat = new Room();
         Set<UserRoom> userRooms = new HashSet<>();
-        // chatRoom firstly declared in database
         roomChat = roomRepository.save(roomChat);
 
         UserRoom creator = new UserRoom();
@@ -280,12 +271,10 @@ public class RoomServiceImpl implements RoomService {
         RoomType roomType = roomTypeService.getRoomTypeEntityByName("group");
         roomChat.setRoomType(roomType);
 
-        // chatRoom is finally created done in database
         Room response = roomRepository.save(roomChat);
 
         MessageType messageType = messageTypeService.getMessageTypeEntityByName("join");
 
-        // send message that creator had created this conversation
         Message creatorMessage = new Message();
         creatorMessage.setMessageType(messageType);
         creatorMessage.setRoom(response);
@@ -302,7 +291,6 @@ public class RoomServiceImpl implements RoomService {
         for (User user : joiningUsers) {
             if (currentUser.getId().equals(user.getId()))
                 continue;
-            // send message each user had joined this conversation
             Message userMessage = new Message();
             userMessage.setMessageType(messageType);
             userMessage.setRoom(response);
@@ -352,11 +340,10 @@ public class RoomServiceImpl implements RoomService {
         unjoinRoom = roomRepository.findById(groupChatId).orElse(null);
         RoomDto res = new RoomDto(unjoinRoom);
         res.setParticipants(getAllJoinedUsersByRoomId(res.getId()));
-        // notify other users that an user had left this conversation
         MessageDto leftMessageDto = new MessageDto();
         leftMessageDto.setRoom(res);
         leftMessageDto
-                .setContent(currentUser.getLastName() + " " + currentUser.getFirstName() + "Đã rời cuộc hội thoại");
+                .setContent(currentUser.getLastName() + " " + currentUser.getFirstName() + " Đã rời cuộc hội thoại");
         leftMessageDto.setUser(new UserDto(currentUser));
         leftMessageDto.setMessageType(messageTypeService.getMessageTypeByName("left"));
         messageService.sendMessage(leftMessageDto);
@@ -382,7 +369,6 @@ public class RoomServiceImpl implements RoomService {
         if (addedRoom == null)
             return null;
 
-        // handle add user into room by declare new userroom entity
         UserRoom newUserRoom = new UserRoom();
         newUserRoom.setRole("Member");
         newUserRoom.setNickName(newUser.getUsername());
@@ -397,11 +383,11 @@ public class RoomServiceImpl implements RoomService {
 
         RoomDto response = new RoomDto(updatedRoom);
 
-        // notify other users that an user had joined this conversation
         MessageDto joinMessageDto = new MessageDto();
         joinMessageDto.setRoom(response);
         joinMessageDto.setContent(
-                currentLoginUser.getUsername() + " đã thêm " + newUser.getUsername() + " vào cuộc trò chuyện");
+                currentLoginUser.getLastName() + " " + currentLoginUser.getFirstName() + " đã thêm "
+                        + newUser.getLastName() + " " + newUser.getFirstName() + " vào cuộc trò chuyện");
         joinMessageDto.setUser(new UserDto(newUser));
         joinMessageDto.setMessageType(messageTypeService.getMessageTypeByName("join"));
         messageService.sendMessage(joinMessageDto);

@@ -89,17 +89,14 @@ public class MessageServiceImpl implements MessageService {
         if (!isInRoomChat(dto))
             return null;
 
-        // create new message entity first
         Message entity = new Message();
         entity.setContent(dto.getContent());
 
-        if (dto.getMessageType() == null) {
-            MessageType messageType = messageTypeService.getMessageTypeEntityByName("chat");
-            entity.setMessageType(messageType);
-        } else {
-            MessageType messageType = messageTypeService.getMessageTypeEntityByName(dto.getMessageType().getName());
-            entity.setMessageType(messageType);
-        }
+        MessageType messageType = (dto.getMessageType() == null)
+                ? messageTypeService.getMessageTypeEntityByName("chat")
+                : messageTypeService.getMessageTypeEntityByName(dto.getMessageType().getName());
+
+        entity.setMessageType(messageType);
 
         Room room = roomRepository.findById(dto.getRoom().getId()).orElse(null);
         if (room == null)
@@ -119,34 +116,38 @@ public class MessageServiceImpl implements MessageService {
 
         List<UserDto> userInRooms = roomService.getAllJoinedUsersByRoomId(savedMessage.getRoom().getId());
 
-        // send message for all users
         MessageDto messageDto = new MessageDto(savedMessage);
         for (UserDto userDto : userInRooms) {
             simpMessagingTemplate.convertAndSendToUser(userDto.getId().toString(), "/privateMessage", messageDto);
         }
 
-        // send notification for all users that they've received new message in
-        // messenger module
-        NotificationDto notification = new NotificationDto();
-        notification.setActor(new UserDto(currentUser));
-        notification.setCreateDate(new Date());
         NotificationType messageNotiType = notificationTypeService.getNotificationTypeEntityByName("Chat");
-        if (messageNotiType != null) {
-            notification.setNotificationType(new NotificationTypeDto(messageNotiType));
-        }
 
         for (UserDto userDto : userInRooms) {
+            if (currentUser.getId().equals(userDto.getId())) {
+                continue;
+            }
 
-            notification.setContent(currentUser.getUsername() + " đã gửi một tin nhắn");
+            NotificationDto notification = new NotificationDto();
+            notification.setActor(new UserDto(currentUser));
+            notification.setCreateDate(new Date());
 
+            if (messageNotiType != null) {
+                notification.setNotificationType(new NotificationTypeDto(messageNotiType));
+            }
+
+            String content = currentUser.getLastName() + " " + currentUser.getFirstName() + " đã gửi một tin nhắn";
             if (userInRooms.size() == 2)
-                notification.setContent(notification.getContent() + " cho bạn");
+                content += " cho bạn";
             else
-                notification.setContent(notification.getContent() + " đến cuộc hội thoại nhóm");
+                content += " đến cuộc hội thoại nhóm";
+
+            notification.setContent(content);
 
             simpMessagingTemplate.convertAndSendToUser(userDto.getId().toString(), "/notification", notification);
         }
 
         return messageDto;
     }
+
 }
