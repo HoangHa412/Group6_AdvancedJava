@@ -73,7 +73,8 @@ public class RelationshipServiceImpl implements RelationshipService {
 
         Notification notification = new Notification();
         notification.setCreateDate(new Date());
-        notification.setContent(requestSender.getUsername() + " đã gửi lời mời kết bạn");
+        notification.setContent(
+                requestSender.getLastName() + " " + requestSender.getFirstName() + " đã gửi lời mời kết bạn");
         notification.setOwner(receiver);
         notification.setActor(requestSender);
         notification.setNotificationType(notificationType);
@@ -125,7 +126,7 @@ public class RelationshipServiceImpl implements RelationshipService {
         Notification notification = new Notification();
         notification.setCreateDate(new Date());
         notification.setActor(receiver);
-        notification.setContent(receiver.getUsername() + " đã chấp nhận lời mời kết bạn");
+        notification.setContent(receiver.getLastName() + receiver.getFirstName() + " đã chấp nhận lời mời kết bạn");
         notification.setOwner(requestSender);
         notification.setNotificationType(notificationType);
 
@@ -183,7 +184,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         for (Relationship relationship : response) {
             RelationshipDto rela = new RelationshipDto(relationship);
 
-            // set mutual friends of current user and viewing user
             rela.getReceiver().setMutualFriends(getMutualFriends(rela.getReceiver().getId(), currentUser.getId()));
 
             res.add(rela);
@@ -205,7 +205,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         for (User user : response) {
             UserDto person = new UserDto(user);
 
-            // set mutual friends of current user and viewing user
             person.setMutualFriends(getMutualFriends(person.getId(), currentUser.getId()));
 
             if (searchObject.getKeyWord() != null && searchObject.getKeyWord().length() > 0) {
@@ -233,7 +232,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         for (User user : response) {
             UserDto person = new UserDto(user);
 
-            // set mutual friends of current user and viewing user
             person.setMutualFriends(getMutualFriends(person.getId(), currentUser.getId()));
 
             res.add(person);
@@ -304,7 +302,6 @@ public class RelationshipServiceImpl implements RelationshipService {
                 user1FriendIds.add(user.getId());
             }
 
-        // get all mutual friend ids
         List<UserDto> user2Friends = getFriendsOfUser(user2.getId(), allFriendSO);
         if (user2Friends != null)
             for (UserDto user : user2Friends) {
@@ -368,7 +365,6 @@ public class RelationshipServiceImpl implements RelationshipService {
         for (User friend : allFriends) {
             UserDto person = new UserDto(friend);
 
-            // set mutual friends of current user and viewing user
             person.setMutualFriends(getMutualFriends(person.getId(), currentUser.getId()));
 
             friendList.add(person);
